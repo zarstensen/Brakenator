@@ -1,11 +1,29 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {}
+    "net6.0-windows7.0": {
+      "BNBackend/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/BNBackend.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BNBackend.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "BNBackend/1.0.0": {
+      "type": "project",
+      "path": "../../BNBackend/BNBackend.vcxproj",
+      "msbuildProject": "../../BNBackend/BNBackend.vcxproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": []
+    "net6.0-windows7.0": [
+      "BNBackend >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\kamjo\\.nuget\\packages\\": {}
@@ -33,7 +51,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\kamjo\\Documents\\skole\\PROG\\Afleveringer\\Brakenator\\BNBackend\\BNBackend.vcxproj": {
+              "projectPath": "C:\\Users\\kamjo\\Documents\\skole\\PROG\\Afleveringer\\Brakenator\\BNBackend\\BNBackend.vcxproj"
+            }
+          }
         }
       },
       "warningProperties": {
