@@ -21,18 +21,18 @@ namespace Brakenator
     /// Interaction logic for Page1.xaml
     /// </summary>
     public partial class Page1 : Page
-    {
-        [DllImport(@"C:\Users\kamjo\Documents\skole\PROG\Afleveringer\Brakenator\Brakenator\x64\Debug\BNBackend.dll")]
+    {/*
+        [DllImport("Bakenator.dll")]
         private static extern int printStuff(string str, int repeat);
 
         [DllImport("kernel32.dll")]
-        public static extern bool AllocConsole();
+        public static extern bool AllocConsole(); */
         public Page1()
         {
-            AllocConsole();
-            int i = printStuff("Hej", 123);
+            //AllocConsole();
+           // int i = printStuff("Hej", 123);
             InitializeComponent();
-            number.Text = i.ToString();
+            //number.Text = i.ToString();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -13,6 +13,10 @@ set(XAML_SRC
 	
 	MainWindow.xaml
 	MainWindow.xaml.cs
+	Page1.xaml
+	Page1.xaml.cs
+	Page2.xaml
+	Page2.xaml.cs
 )
 
 add_executable(${PROJECT_NAME}
