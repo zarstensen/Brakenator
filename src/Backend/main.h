@@ -7,4 +7,4 @@
 #include <iostream>
 #include <string>
 
-void CS_API printStuff(std::string str, int repeat);
+extern "C" int CS_API printStuff(const char* str, int repeat);
