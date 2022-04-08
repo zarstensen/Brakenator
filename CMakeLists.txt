@@ -8,6 +8,8 @@ project("Brakenator" VERSION "0.1.0" LANGUAGES CXX)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(PREDEFINED_TARGETS_FOLDER "Targets")
 
+option(BN_BUILD_SHARED "Builds a shared library (dll) instead of a static library (lib)" ON)
+
 set (BN_SRC
 	src/Brakenator.cpp
 )
@@ -16,10 +18,17 @@ set (BN_INCLUDE
 	include/Brakenator.h
 )
 
+
 # Add source to this project's executable.
+if(${BN_BUILD_SHARED})
 add_library (${PROJECT_NAME} SHARED
 	${BN_INCLUDE} ${BN_SRC}
 )
+else()
+add_library (${PROJECT_NAME}
+	${BN_INCLUDE} ${BN_SRC}
+)
+endif()
 
 if(MSVC)
   target_compile_options(${PROJECT_NAME}  PUBLIC "/ZI")
@@ -27,11 +36,15 @@ if(MSVC)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR} "include/" "ipp_src/")
-target_compile_definitions(${PROJECT_NAME} PRIVATE BN_EXPORTS)
+target_compile_definitions(${PROJECT_NAME} PRIVATE BN_EXPORTS $<$<BOOL:${BN_BUILD_SHARED}>:BN_DLL>)
 
 # place files into the correct filters
 source_group("src" FILES ${SRC})
 source_group("include" FILES ${INCLUDE})
+
+# asio
+
+target_include_directories(${PROJECT_NAME} PRIVATE "asio/asio/include")
 
 # UI
 add_subdirectory("BrakenatorUI")
