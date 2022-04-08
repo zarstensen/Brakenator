@@ -5,6 +5,7 @@
 
 # Unrelated
 [Ss]ketches/
+tmp/
 
 # User-specific files
 *.rsuser

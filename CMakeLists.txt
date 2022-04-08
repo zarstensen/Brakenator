@@ -48,3 +48,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE "asio/asio/include")
 
 # UI
 add_subdirectory("BrakenatorUI")
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/$<TARGET_NAME:${PROJECT_NAME}>.$<IF:$<BOOL:${BN_BUILD_SHARED}>,dll,lib>" "${CMAKE_CURRENT_BINARY_DIR}/BrakenatorUI/$<CONFIG>")
