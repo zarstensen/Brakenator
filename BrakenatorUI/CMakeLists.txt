@@ -6,7 +6,7 @@ set(DESIGNER_SRC
 	AssemblyInfo.cs
 )
 
-# put anything XAML in its name here
+# put anything with XAML in its name here
 set(XAML_SRC
 	App.xaml
 	App.xaml.cs
@@ -26,7 +26,8 @@ set_property(SOURCE App.xaml PROPERTY VS_XAML_TYPE "ApplicationDefinition")
 set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE TRUE)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DOTNET_REFERENCES "Microsoft.CSharp" "PresentationCore" "PresentationFramework" 
- "System" "System.Core" "System.Data" "System.Data.DataSetExtensions" "System.Net.Http" "System.Xaml" "System.Xml" "System.Xml.Linq" "WindowsBase" )
+ "System" "System.Core" "System.Data" "System.Data.DataSetExtensions" "System.Net.Http" "System.Xaml" "System.Xml" "System.Xml.Linq" "WindowsBase"
+)
 
 # depends on the Brakenator dll
 add_dependencies(${PROJECT_NAME} Brakenator)

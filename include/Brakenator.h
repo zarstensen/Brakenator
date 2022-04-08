@@ -1,4 +1,4 @@
-#ifdef WIN32
+#if defined(WIN32) && defined(BN_DLL)
 #ifdef BN_EXPORTS
 #define BN_API __declspec(dllexport)
 #else
@@ -10,8 +10,10 @@
 
 #include <iostream>
 #include <string>
+#include <asio.hpp>
 
 extern "C"
 {
 	int BN_API printStuff(const char* str, int repeat);
+	void BN_API makePostReq();
 }
