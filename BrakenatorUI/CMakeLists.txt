@@ -35,3 +35,8 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DOTNET_REFERENCES "Microsoft.CSh
 
 # depends on the Brakenator dll
 add_dependencies(${PROJECT_NAME} Brakenator)
+
+# copy dll to binary dir
+if(${BN_BUILD_SHARED})
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:Brakenator>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+endif()
