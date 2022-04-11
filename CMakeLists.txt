@@ -8,6 +8,8 @@ project("Brakenator" VERSION "0.1.0" LANGUAGES CXX)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(PREDEFINED_TARGETS_FOLDER "Targets")
 
+option(BN_BUILD_UI "Generate a C# project that functions as a user interface for the Brakenator" ON)
+option(BN_BUILD_TEST "Generate a C++ project that tests the functionality of the Brakenator" OFF)
 option(BN_BUILD_SHARED "Builds a shared library (dll) instead of a static library (lib)" ON)
 
 set (BN_SRC
@@ -44,9 +46,20 @@ source_group("include" FILES ${INCLUDE})
 
 # asio
 
-target_include_directories(${PROJECT_NAME} PRIVATE "asio/asio/include")
+target_include_directories(${PROJECT_NAME} PUBLIC "asio/asio/include")
 
 # UI
+
+if(${BN_BUILD_UI})
 add_subdirectory("BrakenatorUI")
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/$<TARGET_NAME:${PROJECT_NAME}>.$<IF:$<BOOL:${BN_BUILD_SHARED}>,dll,lib>" "${CMAKE_CURRENT_BINARY_DIR}/BrakenatorUI/$<CONFIG>")
+endif()
+
+# Test project
+
+if(${BN_BUILD_TEST})
+add_subdirectory("BrakenatorTEST" BNTEST)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/$<TARGET_NAME:${PROJECT_NAME}>.$<IF:$<BOOL:${BN_BUILD_SHARED}>,dll,lib>" "${CMAKE_CURRENT_BINARY_DIR}/BNTEST/$<CONFIG>")
+endif()
