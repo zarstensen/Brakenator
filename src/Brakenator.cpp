@@ -27,9 +27,9 @@ bool s_manual_weather;
 // how often the weather should be updated, if the location is unchanged
 BNduration s_weather_freq = 10min;
 
-BNduration s_weather_last_call = 0;
+BNduration s_weather_last_call = 0min;
 
-double s_weather_min_distance = 1; // km
+double s_min_weather_distance = 1; // km
 
 double s_prev_lat = INFINITY;
 double s_prev_lon = INFINITY;
@@ -106,7 +106,7 @@ size_t autoWeatherCallback(char* buffer, size_t size, size_t nitems, void* userd
 
 BN_ERR autoWeather(double lat, double lon)
 {
-    if(coordToDistance(prev_lat, prev_lon, lat, lon) < s_min_weather_distance ||
+    if(coordToDistance(s_prev_lat, s_prev_lon, lat, lon) < s_min_weather_distance ||
     high_resolution_clock::now().time_since_epoch() - s_weather_last_call < s_weather_freq)
     {
 
