@@ -43,7 +43,6 @@ extern "C"
 		{
 			return group == other.group && sub_group == other.sub_group && severity == other.severity;
 		}
-
 	};
 
 	void setWeatherKey(const char* path);
@@ -58,7 +57,7 @@ extern "C"
 	///@return returns BN_OK on success, and the failure code on a failure.
 	BN_ERR autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
-	WeatherID getWeather(double lat, double lon);
+	WeatherID getWeather();
 
 	///@brief gets the elevation for the passed location.
 	BN_ERR getElevation(double lat, double lon, double& out_elevation);

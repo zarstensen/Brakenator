@@ -29,7 +29,7 @@ BNduration s_weather_freq = 10min;
 
 BNduration s_weather_last_call = 0min;
 
-double s_min_weather_distance = 1; // km
+double s_min_weather_distance = 2.5; // km
 
 double s_prev_lat = INFINITY;
 double s_prev_lon = INFINITY;
@@ -106,15 +106,21 @@ size_t autoWeatherCallback(char* buffer, size_t size, size_t nitems, void* userd
 
 BN_ERR autoWeather(double lat, double lon)
 {
-    if(coordToDistance(s_prev_lat, s_prev_lon, lat, lon) < s_min_weather_distance ||
-    high_resolution_clock::now().time_since_epoch() - s_weather_last_call < s_weather_freq)
+    if(s_prev_lat + s_prev_lon == INFINITY || coordToDistance(s_prev_lat, s_prev_lon, lat, lon) > s_min_weather_distance ||
+    high_resolution_clock::now().time_since_epoch() - s_weather_last_call > s_weather_freq)
     {
+        s_prev_lat = lat;
+        s_prev_lon = lon;
+
+        s_weather_last_call = high_resolution_clock::now().time_since_epoch();
 
         CURL* curlh = curl_easy_init();
 
         if(curlh)
         {
             // read the api key
+
+            std::cout << std::filesystem::absolute(s_weather_key_file) << ':' << std::filesystem::exists(s_weather_key_file) << '\n';
 
             if(!std::filesystem::exists(s_weather_key_file))
                 return BN_INVALID_API_KEY;
@@ -182,7 +188,7 @@ BN_ERR autoWeather(double lat, double lon)
 
 }
 
-WeatherID getWeather(double lat, double lon)
+WeatherID getWeather()
 {
     return s_current_weather;
 }
