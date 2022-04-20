@@ -1,0 +1,7 @@
+Package: vcpkg-cmake-config
+Version: 2022-02-06
+Architecture: x64-osx
+Multi-Arch: same
+Abi: bdbe290cf3755322f3d229438c811ae2047ebdc0f64745fa2736bdc700cff530
+Type: Port
+Status: install ok half-installed

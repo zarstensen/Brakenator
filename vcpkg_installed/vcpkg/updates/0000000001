@@ -1,0 +1,8 @@
+Package: zlib
+Version: 1.2.12
+Architecture: x64-osx
+Multi-Arch: same
+Abi: 18cd5c8aeb10fb10af7d5024d95e4d64137ea5557ff29d989aadd0ee89472494
+Description: A compression library
+Type: Port
+Status: install ok installed

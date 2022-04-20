@@ -1,0 +1,7 @@
+Package: curl
+Feature: sectransp
+Architecture: x64-osx
+Multi-Arch: same
+Description: SSL support (sectransp)
+Type: Port
+Status: install ok installed

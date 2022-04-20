@@ -1,8 +1,11 @@
 ﻿cmake_minimum_required (VERSION 3.8) # C# support
 
 set(CMAKE_CXX_STANDARD 17)
+set(VCPKG_ROOT_)
 
 project("Brakenator" VERSION "0.1.0" LANGUAGES CXX)
+
+include("${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # place all predefined target projects into a filter
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -44,9 +47,17 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE BN_EXPORTS $<$<BOOL:${BN_BUIL
 source_group("src" FILES ${SRC})
 source_group("include" FILES ${INCLUDE})
 
-# asio
+# libcurl
 
-target_include_directories(${PROJECT_NAME} PUBLIC "asio/asio/include")
+find_package(CURL CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CURL_INCLUDE_DIRECTORIES})
+
+# rapidjson
+
+find_package(RapidJSON CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE rapidjson)
+target_include_directories(${PROJECT_NAME} PRIVATE ${RapidJSON_INCLUDE_DIRECTORIES})
 
 # UI
 

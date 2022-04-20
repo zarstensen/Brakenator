@@ -2,5 +2,5 @@
 
 int main()
 {
-	printStuff("EEE", 123);
+	autoWeather(0, 0);
 }

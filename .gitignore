@@ -6,6 +6,7 @@
 # Unrelated
 [Ss]ketches/
 tmp/
+./vcpkg_installed
 
 # User-specific files
 *.rsuser
