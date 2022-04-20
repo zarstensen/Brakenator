@@ -1,9 +1,19 @@
 ﻿cmake_minimum_required (VERSION 3.8) # C# support
 
 set(CMAKE_CXX_STANDARD 17)
-set(VCPKG_ROOT_)
-
 project("Brakenator" VERSION "0.1.0" LANGUAGES CXX)
+
+# detect architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set(BN_ARCH "x64")
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+	set(BN_ARCH "x86")
+else()
+	message(FATAL_ERROR "Unable to determine platform architecture!")
+endif()
+
+# setup vcpkg triplet
+set(VCPKG_TARGET_TRIPLET "${BN_ARCH}-${CMAKE_SYSTEM_NAME}-static" CACHE STRING "target triplet" FORCE)
 
 include("${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 

@@ -22,6 +22,7 @@ set(XAML_SRC
 add_executable(${PROJECT_NAME}
 	${DESIGNER_SRC}
 	${XAML_SRC}
+	Brakenator.cs
 )
 
 csharp_set_designer_cs_properties(${DESIGNER_SRC})
@@ -38,5 +39,5 @@ add_dependencies(${PROJECT_NAME} Brakenator)
 
 # copy dll to binary dir
 if(${BN_BUILD_SHARED})
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:Brakenator>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:Brakenator>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 endif()

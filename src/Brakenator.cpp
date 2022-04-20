@@ -90,6 +90,8 @@ std::pair<double, double> getBrakingDistance(double lat, double lon)
     // if the weather id is unititialized, use autoWeather to get the weather based on location.
     if(s_current_weather == WeatherID())
         autoWeather(lat, lon);
+
+    return { 0, 0 };
 }
 
 // callback function for curl
