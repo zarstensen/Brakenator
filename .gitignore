@@ -6,7 +6,7 @@
 # Unrelated
 [Ss]ketches/
 tmp/
-./vcpkg_installed
+/vcpkg_installed
 
 # User-specific files
 *.rsuser
@@ -403,3 +403,4 @@ FodyWeavers.xsd
 
 # Pycharm files
 */.idea
+

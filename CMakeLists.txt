@@ -3,18 +3,6 @@
 set(CMAKE_CXX_STANDARD 17)
 project("Brakenator" VERSION "0.1.0" LANGUAGES CXX)
 
-# detect architecture
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	set(BN_ARCH "x64")
-elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-	set(BN_ARCH "x86")
-else()
-	message(FATAL_ERROR "Unable to determine platform architecture!")
-endif()
-
-# setup vcpkg triplet
-set(VCPKG_TARGET_TRIPLET "${BN_ARCH}-${CMAKE_SYSTEM_NAME}-static" CACHE STRING "target triplet" FORCE)
-
 include("${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # place all predefined target projects into a filter
@@ -22,7 +10,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(PREDEFINED_TARGETS_FOLDER "Targets")
 
 option(BN_BUILD_UI "Generate a C# project that functions as a user interface for the Brakenator" ON)
-option(BN_BUILD_TEST "Generate a C++ project that tests the functionality of the Brakenator" OFF)
+option(BN_BUILD_TEST "Generate a C++ project that tests the functionality of the Brakenator" ON)
 option(BN_BUILD_SHARED "Builds a shared library (dll) instead of a static library (lib)" ON)
 
 set (BN_SRC

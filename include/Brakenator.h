@@ -45,20 +45,20 @@ extern "C"
 		}
 	};
 
-	void setWeatherKey(const char* path);
-	void setElevationKey(const char* path);
+	void BN_API setWeatherKey(const char* path);
+	void BN_API setElevationKey(const char* path);
 
-	BN_ERR getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
+	BN_ERR BN_API getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
 
 	///@brief sets the wether type that should be used when approximating the friction coefficient.
 	/// for details on how to pass the parameters, see https://openweathermap.org/weather-conditions
-	void setWeather(WeatherID weather_id);
+	void BN_API setWeather(WeatherID weather_id);
 	///@brief automaticly determines the weather based on the location passed.
 	///@return returns BN_OK on success, and the failure code on a failure.
-	BN_ERR autoWeather(double lat, double lon);
+	BN_ERR BN_API autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
-	WeatherID getWeather();
+	WeatherID BN_API getWeather();
 
 	///@brief gets the elevation for the passed location.
-	BN_ERR getElevation(double lat, double lon, double& out_elevation);
+	BN_ERR BN_API getElevation(double lat, double lon, double& out_elevation);
 }

@@ -40,4 +40,6 @@ add_dependencies(${PROJECT_NAME} Brakenator)
 # copy dll to binary dir
 if(${BN_BUILD_SHARED})
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:Brakenator>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_RUNTIME_DLLS:Brakenator>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>" COMMAND_EXPAND_LISTS)
 endif()
