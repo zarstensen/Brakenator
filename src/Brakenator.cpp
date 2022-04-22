@@ -187,10 +187,24 @@ BN_ERR autoWeather(double lat, double lon)
     }
 
     return BN_OK;
-
 }
 
 WeatherID getWeather()
 {
     return s_current_weather;
+}
+
+uint16_t getWeatherGroup()
+{
+    return s_current_weather.group;
+}
+
+uint16_t getWeatherGroup()
+{
+    return s_current_weather.sub_group;
+}
+
+uint16_t getWeatherGroup()
+{
+    return s_current_weather.severity;
 }
