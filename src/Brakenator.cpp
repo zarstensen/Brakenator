@@ -189,9 +189,9 @@ BN_ERR autoWeather(double lat, double lon)
     return BN_OK;
 }
 
-WeatherID getWeather()
+WeatherID* getWeather()
 {
-    return s_current_weather;
+    return &s_current_weather;
 }
 
 uint16_t getWeatherGroup()
@@ -199,12 +199,12 @@ uint16_t getWeatherGroup()
     return s_current_weather.group;
 }
 
-uint16_t getWeatherGroup()
+uint16_t getWeatherSubGroup()
 {
     return s_current_weather.sub_group;
 }
 
-uint16_t getWeatherGroup()
+uint16_t getWeatherSeverity()
 {
     return s_current_weather.severity;
 }

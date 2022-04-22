@@ -25,7 +25,7 @@ extern "C"
 		BN_UNKNOWN
 	};
 
-	#pragma push()
+
 	///@brief structure containing information about a weather type.
 	struct WeatherID
 	{
@@ -58,7 +58,7 @@ extern "C"
 	///@return returns BN_OK on success, and the failure code on a failure.
 	BN_ERR BN_API autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
-	WeatherID getWeather();
+	WeatherID* BN_API getWeather();
 
 	uint16_t BN_API getWeatherGroup();
 	uint16_t BN_API getWeatherSubGroup();
