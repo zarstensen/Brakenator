@@ -208,7 +208,7 @@ BN_ERR autoWeather(double lat, double lon)
     return BN_OK;
 }
 
-WeatherID* getWeather()
+const WeatherID* getWeather()
 {
     return &s_current_weather;
 }
