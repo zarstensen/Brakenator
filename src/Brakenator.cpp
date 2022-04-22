@@ -37,6 +37,17 @@ double s_prev_lon = INFINITY;
 Path s_weather_key_file;
 Path s_elevation_key_file;
 
+struct ElevationPoint
+{
+    double lat = INFINITY;
+    double lon = INFINITY;
+    double elevation = INFINITY;
+};
+
+std::pair<ElevationPoint, ElevationPoint> s_slope_elevations;
+
+// ======== PRIVATE FUNCTIONS ========
+
 // takes a to the power of n, where n is a whole number.
 template<typename T>
 constexpr T ipow(T a, size_t n)
@@ -60,11 +71,6 @@ void setWeatherKey(const char* path)
     s_weather_key_file = path;
 }
 
-void setElevationKey(const char* path)
-{
-    s_elevation_key_file = path;
-}
-
 ///@brief calculates the distane (in km) from (lat1,lon1) to (lat2,lon2) 
 double coordToDistance(double lat1, double lon1, double lat2 = 0, double lon2 = 0)
 {
@@ -83,6 +89,22 @@ double coordToDistance(double lat1, double lon1, double lat2 = 0, double lon2 = 
     return EARTH_RAD * c;
 }
 
+double slopeAngle()
+{
+    if(s_slope_elevations.second.elevation != INFINITY)
+    {
+        double d_height = s_slope_elevations.first.elevation - s_slope_elevations.second.elevation;
+        double d_length = coordToDistance(s_slope_elevations.first.lat, s_slope_elevations.first.lon,
+            s_slope_elevations.second.lat, s_slope_elevations.second.lon);
+
+        return atan(d_height / d_length);
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 // ======== EXPORTED FUNCTIONS ========
 
 std::pair<double, double> getBrakingDistance(double lat, double lon)
@@ -96,9 +118,8 @@ std::pair<double, double> getBrakingDistance(double lat, double lon)
 
 // callback function for curl
 // stores the GET response into the userdata, which is assumed to be a std::string*.
-size_t autoWeatherCallback(char* buffer, size_t size, size_t nitems, void* userdata)
+size_t curlGetCallback(char* buffer, size_t size, size_t nitems, void* userdata)
 {
-
     std::string* response_str = (std::string*)userdata;
 
     response_str->append(buffer, nitems);
@@ -122,8 +143,6 @@ BN_ERR autoWeather(double lat, double lon)
         {
             // read the api key
 
-            std::cout << std::filesystem::absolute(s_weather_key_file) << ':' << std::filesystem::exists(s_weather_key_file) << '\n';
-
             if(!std::filesystem::exists(s_weather_key_file))
                 return BN_INVALID_API_KEY;
 
@@ -139,14 +158,14 @@ BN_ERR autoWeather(double lat, double lon)
 
             std::stringstream header;
 
-            header << "https://api.openweathermap.org/data/2.5/weather?lat=" << "40" << "&lon=" << "40" << "&appid=" << key;
+            header << "https://api.openweathermap.org/data/2.5/weather?lat=" << lat << "&lon=" << lon << "&appid=" << key;
             curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
             curl_easy_setopt(curlh, CURLOPT_HTTPGET, true);
 
             std::string response;
 
             curl_easy_setopt(curlh, CURLOPT_WRITEDATA, &response);
-            curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, autoWeatherCallback);
+            curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, curlGetCallback);
 
 
             curl_easy_perform(curlh);
@@ -197,6 +216,54 @@ WeatherID* getWeather()
 uint16_t getWeatherGroup()
 {
     return s_current_weather.group;
+}
+
+BN_ERR BN_API sampleElevation(double lat, double lon)
+{
+    if(s_slope_elevations.first.elevation == INFINITY ||
+    coordToDistance(s_slope_elevations.first.lat, s_slope_elevations.first.lon, lat, lon) < 30)
+        return BN_OK;
+
+    // use open topo data to get the elevation.
+
+    CURL* curlh = curl_easy_init();
+
+    if(curlh)
+    {
+         std::stringstream header;
+
+            header << "https://api.opentopodata.org/v1/aster30m?locations=" << lat << ',' << lon;
+            curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
+            curl_easy_setopt(curlh, CURLOPT_HTTPGET, true);
+
+            std::string response;
+
+            curl_easy_setopt(curlh, CURLOPT_WRITEDATA, &response);
+            curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, curlGetCallback);
+            
+            curl_easy_perform(curlh);
+            curl_easy_cleanup(curlh);
+
+            rjson::Document json_response;
+            json_response.Parse(response.c_str());
+
+            // check response status code
+            std::string res = json_response["status"].GetString();
+
+            if(res == "INVALID_REQUEST")
+                return BN_INVALID_REQUEST;
+            else if(res == "SERVER_ERROR")
+                return BN_UNKNOWN;
+
+            // store the weather id
+
+            double elevation_value = json_response["results"][0]["elevation"].GetDouble();
+
+            s_slope_elevations.second = s_slope_elevations.first;
+            s_slope_elevations.first = ElevationPoint{lat, lon, elevation_value / 1000.0 /*km*/ };
+    }
+
+    return BN_OK;
 }
 
 uint16_t getWeatherSubGroup()

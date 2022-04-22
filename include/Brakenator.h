@@ -47,7 +47,6 @@ extern "C"
 	};
 
 	void BN_API setWeatherKey(const char* path);
-	void BN_API setElevationKey(const char* path);
 
 	BN_ERR BN_API getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
 
@@ -65,5 +64,8 @@ extern "C"
 	uint16_t BN_API getWeatherSeverity();
 
 	///@brief gets the elevation for the passed location.
-	BN_ERR BN_API getElevation(double lat, double lon, double& out_elevation);
+	BN_ERR BN_API sampleElevation(double lat, double lon);
 }
+ 
+///@brief retrieve the road angle the car is currently driving on.
+ the double slopeAngle();
