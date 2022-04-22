@@ -25,6 +25,7 @@ extern "C"
 		BN_UNKNOWN
 	};
 
+
 	///@brief structure containing information about a weather type.
 	struct WeatherID
 	{
@@ -46,7 +47,6 @@ extern "C"
 	};
 
 	void BN_API setWeatherKey(const char* path);
-	void BN_API setElevationKey(const char* path);
 
 	BN_ERR BN_API getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
 
@@ -57,8 +57,15 @@ extern "C"
 	///@return returns BN_OK on success, and the failure code on a failure.
 	BN_ERR BN_API autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
-	WeatherID BN_API getWeather();
+	WeatherID* BN_API getWeather();
+
+	uint16_t BN_API getWeatherGroup();
+	uint16_t BN_API getWeatherSubGroup();
+	uint16_t BN_API getWeatherSeverity();
 
 	///@brief gets the elevation for the passed location.
-	BN_ERR BN_API getElevation(double lat, double lon, double& out_elevation);
+	BN_ERR BN_API sampleElevation(double lat, double lon);
 }
+ 
+///@brief retrieve the road angle the car is currently driving on.
+ the double slopeAngle();
