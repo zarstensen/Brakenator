@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Runtime.InteropServices;
+using System.Timers;
+
 
 namespace Brakenator
 {
@@ -30,7 +32,36 @@ namespace Brakenator
         {
             InitializeComponent();
             main_frame.Content = new Page1();
+            InitTimer();
+        }
 
+        private Timer timer;
+
+
+
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+
+            var timeDate = DateTime.Now;
+            int hour = timeDate.Hour;
+            int minute = timeDate.Minute;
+            string time;
+
+            time = hour + ":" + minute;
+
+
+            clock.Dispatcher.Invoke(
+            System.Windows.Threading.DispatcherPriority.Normal,
+            new Action(() => { clock.Text = time; } ));
+        }
+
+        public void InitTimer()
+        {
+            //make timer
+            timer = new Timer(1000);
+            timer.AutoReset = true;
+            timer.Enabled = true;
+            timer.Elapsed += OnTimedEvent;
         }
 
         private void page1Button_Click(object sender, RoutedEventArgs e)
@@ -50,6 +81,14 @@ namespace Brakenator
                 main_frame.Content = new Page2();
             }
             pageNumber = 2;
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            const double FONT_WEIGHT = .05;
+            double font_size = main_frame.ActualWidth * FONT_WEIGHT;
+            brakingDistance.FontSize = font_size;
+            clock.FontSize = font_size;
         }
     }
 }
