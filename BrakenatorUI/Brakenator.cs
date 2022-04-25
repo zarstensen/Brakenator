@@ -60,16 +60,10 @@ namespace Brakenator
 
 		///@brief gets the current weather id used to approximate the friction coefficient.
 		[DllImport(DLL_NAME)]
-		public static extern ref readonly WEATHER getWeather();
+		public static extern WEATHER getWeather();
 
 		///@brief gets the elevation for the passed location.
 		[DllImport(DLL_NAME)]
 		public static extern ERR getElevation(double lat, double lon, ref double out_elevation);
-
-		public static void test()
-        {
-			setWeatherKey("AAA");
-        }
-
 	}
 }
