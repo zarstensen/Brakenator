@@ -46,26 +46,26 @@ extern "C"
 		}
 	};
 
-	void BN_API setWeatherKey(const char* path);
+	BN_API void setWeatherKey(const char* path);
 
-	BN_ERR BN_API getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
+	BN_API BN_ERR getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
 
 	///@brief sets the wether type that should be used when approximating the friction coefficient.
 	/// for details on how to pass the parameters, see https://openweathermap.org/weather-conditions
-	void BN_API setWeather(WeatherID weather_id);
+	BN_API void setWeather(WeatherID weather_id);
 	///@brief automaticly determines the weather based on the location passed.
 	///@return returns BN_OK on success, and the failure code on a failure.
-	BN_ERR BN_API autoWeather(double lat, double lon);
+	BN_API BN_ERR autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
-	WeatherID* BN_API getWeather();
+	BN_API const WeatherID* getWeather();
 
-	uint16_t BN_API getWeatherGroup();
-	uint16_t BN_API getWeatherSubGroup();
-	uint16_t BN_API getWeatherSeverity();
+	BN_API uint16_t getWeatherGroup();
+	BN_API uint16_t getWeatherSubGroup();
+	BN_API uint16_t getWeatherSeverity();
 
 	///@brief gets the elevation for the passed location.
-	BN_ERR BN_API sampleElevation(double lat, double lon);
+	BN_API BN_ERR sampleElevation(double lat, double lon);
 }
  
 ///@brief retrieve the road angle the car is currently driving on.
- the double slopeAngle();
+double slopeAngle();

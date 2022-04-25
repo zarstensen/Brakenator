@@ -5,19 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Brakenator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" 
+        SizeChanged="Window_SizeChanged" FontSize="12"
+        Background="#171720" Foreground="#bebebe">
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Frame x:Name="main_frame" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden"/>
-        <Button x:Name="page1Button" Click="page1Button_Click" Grid.Row="1" Content="Page 1"/>
-        <Button x:Name="page2Button" Click="page2Button_Click" Grid.Row="1" Grid.Column="1" Content="Page 2"/>
+        <Frame x:Name="main_frame" Grid.Row="1" Grid.ColumnSpan="7" NavigationUIVisibility="Hidden"/>
+        <Button Click="page1Button_Click" Grid.Row="2" Content="Page 1"/>
+        <Button Click="page2Button_Click" Grid.Row="2" Grid.Column="1" Content="Page 2"/>
+        <TextBlock x:Name="brakingDistance" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="5" Text="Braking Distance"/>
+        <TextBlock x:Name="clock" Text="00:00" />
     </Grid>
 </Window>
 

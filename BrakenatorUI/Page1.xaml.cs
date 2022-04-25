@@ -22,8 +22,7 @@ namespace Brakenator
     /// </summary>
     public partial class Page1 : Page
     {
-        [DllImport("Brakenator.dll")]
-        private static extern int printStuff(string str, int repeat);
+
 
         [DllImport("kernel32.dll")]
         public static extern bool AllocConsole();
@@ -32,9 +31,10 @@ namespace Brakenator
         public Page1()
         {
             AllocConsole();
-            int i = printStuff("Hej", 123);
             InitializeComponent();
-            number.Text = i.ToString();
+            BN.setWeatherKey(@"C:\Users\kamjo\Documents\skole\PROG\Afleveringer\Brakenator\build\weather_key.txt");
+            BN.autoWeather(55.777960, 12.527173);
+            number.Text = BN.getWeatherGroup().ToString();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

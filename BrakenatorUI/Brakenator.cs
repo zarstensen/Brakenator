@@ -15,7 +15,7 @@ namespace Brakenator
     {
 		private const string DLL_NAME = @"C:\Dev\cpp\skole\Brakenator\build\BrakenatorUI\Debug\Brakenator.dll";
 		// ============ DATATYPES ============
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]  
+		// [StructLayout(LayoutKind.Sequential)]  
 		public struct WeatherID
 		{
 			public ushort group;
@@ -53,16 +53,7 @@ namespace Brakenator
 
 		///@brief gets the current weather id used to approximate the friction coefficient.
 		[DllImport(DLL_NAME)]
-		private static extern WeatherID getWeather();
-
-		public static WeatherID getWeatherID()
-		{
-			IntPtr ptr = Marshal.AllocHGlobal(sizeof(WeatherID));
-			ptr = getWeather();
-			WeatherID wid = (WeatherID)Marshal.PtrToStructure(ptr, typeof(WeatherID));
-
-			return wid;
-		}
+		public static extern ref readonly WeatherID getWeather();
 
 		///@brief gets the elevation for the passed location.
 		[DllImport(DLL_NAME)]
