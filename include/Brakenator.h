@@ -25,6 +25,12 @@ extern "C"
 		BN_UNKNOWN
 	};
 
+	enum BN_WEATHER
+	{
+		BN_ICE,
+		BN_WET,
+		BN_DRY
+	};
 
 	///@brief structure containing information about a weather type.
 	struct WeatherID
@@ -46,24 +52,31 @@ extern "C"
 		}
 	};
 
+	struct BrakingInfo
+	{
+		double distance;
+		double time;
+	};
+
+	///@brief retrieves the braking distance and time estimated from the current conditions of the roead.
+	///@param info_out a pointer to the structure of which getBrakingInfo should write its result to.
+	BN_API void getBrakingInfo(double velocity, BrakingInfo* info_out);
+	
+	///@brief sets the directory of the openweathermap api key file.
 	BN_API void setWeatherKey(const char* path);
 
+	///@brief sets the reaction time that should be used in the braking distance estimation
 	BN_API void setReactionTime(double reaction);
-
-	BN_API BN_ERR getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
 
 	///@brief sets the wether type that should be used when approximating the friction coefficient.
 	/// for details on how to pass the parameters, see https://openweathermap.org/weather-conditions
-	BN_API void setWeather(WeatherID weather_id);
+	BN_API void setWeather(BN_WEATHER weather);
 	///@brief automaticly determines the weather based on the location passed.
 	///@return returns BN_OK on success, and the failure code on a failure.
 	BN_API BN_ERR autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
-	BN_API const WeatherID* getWeather();
+	BN_API BN_WEATHER getWeather();
 
-	///@brief gets the elevation for the passed location.
+	///@brief samples the elevation for the passed location.
 	BN_API BN_ERR sampleElevation(double lat, double lon);
 }
- 
-///@brief retrieve the road angle the car is currently driving on.
-double slopeAngle();
