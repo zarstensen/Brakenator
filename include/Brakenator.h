@@ -48,6 +48,8 @@ extern "C"
 
 	BN_API void setWeatherKey(const char* path);
 
+	BN_API void setReactionTime(double reaction);
+
 	BN_API BN_ERR getBrakingDistance(double lat, double lon, double& out_distance, double& out_time);
 
 	///@brief sets the wether type that should be used when approximating the friction coefficient.
@@ -58,10 +60,6 @@ extern "C"
 	BN_API BN_ERR autoWeather(double lat, double lon);
 	///@brief gets the current weather id used to approximate the friction coefficient.
 	BN_API const WeatherID* getWeather();
-
-	BN_API uint16_t getWeatherGroup();
-	BN_API uint16_t getWeatherSubGroup();
-	BN_API uint16_t getWeatherSeverity();
 
 	///@brief gets the elevation for the passed location.
 	BN_API BN_ERR sampleElevation(double lat, double lon);

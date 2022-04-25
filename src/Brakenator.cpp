@@ -34,6 +34,8 @@ double s_min_weather_distance = 2.5; // km
 double s_prev_lat = INFINITY;
 double s_prev_lon = INFINITY;
 
+double s_reaction = 1;
+
 Path s_weather_key_file;
 Path s_elevation_key_file;
 
@@ -69,6 +71,16 @@ constexpr double dtor(double deg)
 void setWeatherKey(const char* path)
 {
     s_weather_key_file = path;
+}
+
+void setReactionTime(double reaction)
+{
+    s_reaction = reaction;
+}
+
+double getMu()
+{
+    return 1;
 }
 
 ///@brief calculates the distane (in km) from (lat1,lon1) to (lat2,lon2) 
@@ -107,13 +119,16 @@ double slopeAngle()
 
 // ======== EXPORTED FUNCTIONS ========
 
-std::pair<double, double> getBrakingDistance(double lat, double lon)
+std::pair<double, double> getBrakingDistance(double velocity)
 {
-    // if the weather id is unititialized, use autoWeather to get the weather based on location.
-    if(s_current_weather == WeatherID())
-        autoWeather(lat, lon);
 
-    return { 0, 0 };
+    // start by calculating the braking distance
+    double distance = -sqrt(ipow(velocity, 2) / (getMu() * GRAVITY)) + velocity * s_reaction;
+
+    // use the distance calculated to calculate the time
+    double time = (sqrt(ipow(velocity, 2) * 2 * getMu() * GRAVITY * distance) - velocity) / (getMu() * GRAVITY) + s_reaction;
+
+    return { distance, time };
 }
 
 // callback function for curl
