@@ -14,7 +14,7 @@
 extern "C"
 {
 
-	enum BN_ERR
+	enum BN_ERR: short
 	{
 		BN_OK = 0,
 		BN_INVALID_API_KEY,
@@ -25,7 +25,7 @@ extern "C"
 		BN_UNKNOWN
 	};
 
-	enum BN_WEATHER
+	enum BN_WEATHER: short
 	{
 		BN_ICE,
 		BN_WET,

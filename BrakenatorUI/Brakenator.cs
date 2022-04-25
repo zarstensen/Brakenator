@@ -13,7 +13,7 @@ namespace Brakenator
     /// also contains some datatypes needed when recieving data from the dll.
     public class BN
     {
-		private const string DLL_NAME = @"C:\Dev\cpp\skole\Brakenator\build\BrakenatorUI\Debug\Brakenator.dll";
+		private const string DLL_NAME = @"Brakenator.dll";
 		// ============ DATATYPES ============
 		// [StructLayout(LayoutKind.Sequential)]  
 		public struct WeatherID
@@ -31,6 +31,13 @@ namespace Brakenator
 			BN_EXCEEDED_API_LIMIT,
 			BN_INVLAID_FILE,
 			BN_UNKNOWN
+		}
+
+		public enum WEATHER: short
+		{
+			BN_DRY,
+			BN_WET,
+			BN_ICE
 		}
 
 		// ============ METHODS ============
@@ -53,7 +60,7 @@ namespace Brakenator
 
 		///@brief gets the current weather id used to approximate the friction coefficient.
 		[DllImport(DLL_NAME)]
-		public static extern ref readonly WeatherID getWeather();
+		public static extern ref readonly WEATHER getWeather();
 
 		///@brief gets the elevation for the passed location.
 		[DllImport(DLL_NAME)]
