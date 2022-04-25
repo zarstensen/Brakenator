@@ -74,7 +74,21 @@ constexpr double dtor(double deg)
 // get the estimated friction coefficient based on the current weather.
 double getMu()
 {
-    return 1;
+    switch(s_weather)
+    {
+        case BN_DRY:
+            return 0.8;
+            break;
+        case BN_WET:
+            return 0.6;
+            break;
+        case BN_ICE:
+            return 0.3;
+            break;
+        default:
+            // this should never be hit.
+            return -1;
+    }
 }
 
 bool isWet(uint16_t wid)
@@ -243,7 +257,7 @@ BN_ERR autoWeather(double lat, double lon)
             is_wet = isWet(json_response["current"]["weather"][0]["id"].GetInt());
 
             std::cout << is_wet << '\n';
-            
+
             if(!is_wet)
                 for(uint16_t i = 0; i < local_time->tm_hour && i < 6; i++)
                 {
