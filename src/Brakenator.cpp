@@ -313,7 +313,7 @@ BN_ERR autoWeather(double lat, double lon)
             else if(is_wet)
                 s_weather = current_temp < 0 ? BN_ICE : BN_WET;
 
-            std::cout << "CW: " << s_weather << "\nCT: " << current_temp << '\n';
+            std::cout << "IW: " << is_wet << " CW: " << s_weather << "CT: " << current_temp << '\n';
         }
         else
         {

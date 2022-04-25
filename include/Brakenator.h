@@ -27,9 +27,9 @@ extern "C"
 
 	enum BN_WEATHER: short
 	{
-		BN_ICE,
+		BN_DRY,
 		BN_WET,
-		BN_DRY
+		BN_ICE
 	};
 
 	///@brief structure containing information about a weather type.
