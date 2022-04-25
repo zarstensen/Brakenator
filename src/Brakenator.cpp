@@ -326,7 +326,7 @@ BN_ERR autoWeather(double lat, double lon)
 
 BN_WEATHER getWeather()
 {
-    return BN_DRY;
+    return s_weather;
 }
 
 BN_ERR BN_API sampleElevation(double lat, double lon)
