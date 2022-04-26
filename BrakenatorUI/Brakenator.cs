@@ -24,8 +24,8 @@ namespace Brakenator
 		}
 		public struct BrakingInfo
 		{
-			double distance;
-			double time;
+			public double distance;
+			public double time;
 		};
 		public enum ERR: short
         {
@@ -35,6 +35,7 @@ namespace Brakenator
 			BN_TIMED_OUT,
 			BN_EXCEEDED_API_LIMIT,
 			BN_INVLAID_FILE,
+			BN_HOST_ERROR,
 			BN_UNKNOWN
 		}
 

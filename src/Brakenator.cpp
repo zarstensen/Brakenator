@@ -224,7 +224,7 @@ BN_ERR autoWeather(double lat, double lon)
             // setup curl get request for the current weather
 
             std::stringstream header;
-            header << "https://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
+            header << "http://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
 
             curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
             curl_easy_setopt(curlh, CURLOPT_HTTPGET, true);
@@ -235,6 +235,8 @@ BN_ERR autoWeather(double lat, double lon)
             curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, curlGetCallback);
 
             int res = curl_easy_perform(curlh);
+
+            std::cout << response << '\n';
 
             // check if get request succeded
 
@@ -298,7 +300,7 @@ BN_ERR autoWeather(double lat, double lon)
 
                 // prepare new request for the previous day.
                 header.clear();
-                header << "https://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << new_time << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
+                header << "http://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << new_time << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
 
                 curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
 

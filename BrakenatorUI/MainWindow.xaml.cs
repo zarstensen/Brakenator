@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 using System.Timers;
 using System.Windows.Forms;
 using System.IO;
-//using System.Runtime.InteropServices;
 
 namespace Brakenator
 {
@@ -32,9 +31,10 @@ namespace Brakenator
         Page1 page1;
         Page2 page2;
 
-        const string DAY_CLOUDY_PATH = @"\resources\day_cloudy.png";
-        const string RAIN_PATH = @"\resources\rain.png";
-        const string SNOW_PATH = @"\resources\snow.png";
+        const string ROAD_SUN = "road_sun";
+        const string ROAD_RAIN = "road_rain";
+        const string ROAD_SNOW = "road_snow";
+
 
         public MainWindow()
         {
@@ -85,39 +85,48 @@ namespace Brakenator
 
 
             //BN.autoWeather(55.777960, 12.527173);
-            BN.autoWeather(51.142622, 9.493477);
+            short return_code = BN.autoWeather(51.142622, 9.493477);
             currentWeather = (short)BN.getWeather();
-            string currentWeatherPath;
+
+            string contentKey;
             
             switch (currentWeather)
             {
                 case 0:
-                    currentWeatherPath = DAY_CLOUDY_PATH;
+                    contentKey = ROAD_SUN;
 
                     break;
                 case 1:
-                    currentWeatherPath = RAIN_PATH;
+                    contentKey = ROAD_RAIN;
 
                     break;
                 case 2:
-                    currentWeatherPath = SNOW_PATH;
+                    contentKey = ROAD_SNOW;
                     
                     break;
                 default:
-                    currentWeatherPath = "";
+                    contentKey = "";
                     break;
             }
             clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
-            new Action(() => { weatherIcon.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + currentWeatherPath)); }));
+            new Action(() => { weatherIcon.Content = System.Windows.Application.Current.FindResource("road_sun"); }));
+            
 
-
+            //get braking info
+            BN.BrakingInfo info = new BN.BrakingInfo();
+            BN.getBrakingInfo(69, ref info);
+            clock.Dispatcher.Invoke(
+            System.Windows.Threading.DispatcherPriority.Normal,
+            new Action(() => { page1.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
+                page1.brakingTime.Text = Math.Round(info.time).ToString() + " s";
+            }));
         }
 
         public void InitTimer()
         {
             //make timer
-            timer = new System.Timers.Timer(1000);
+            timer = new System.Timers.Timer(250);
             timer.AutoReset = true;
             timer.Enabled = true;
             timer.Elapsed += OnTimedEvent;
