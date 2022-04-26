@@ -16,6 +16,7 @@
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.025*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -28,13 +29,10 @@
         </Grid.ColumnDefinitions>
         <Frame x:Name="main_frame" Grid.Row="1" Grid.ColumnSpan="7" NavigationUIVisibility="Hidden"/>
 
-        <Ellipse Fill="#bebebe" Stroke="#bebebe" x:Name="ball1" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" />
-        <Ellipse Stroke="#bebebe" x:Name="ball2" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" />
-
+        
         <Border  BorderBrush="#bebebe" BorderThickness="0,0,1,1">
             <TextBlock x:Name="clock" Text="00:00" HorizontalAlignment="Center"/>
         </Border>
-
         <Border BorderBrush="#bebebe" BorderThickness="0,0,1,1" Grid.Column="1" Grid.ColumnSpan="5" >
             <TextBlock x:Name="brakingDistance" HorizontalAlignment="Center" VerticalAlignment="Top"  Text="Braking Distance"/>
         </Border>
@@ -42,6 +40,71 @@
         <Border BorderBrush="#bebebe"  BorderThickness="0,0,1,1" Grid.Column="6" >
             <TextBlock />
         </Border>
+
+        <Ellipse Fill="#bebebe" Stroke="#bebebe" x:Name="ball1" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" />
+        <Ellipse Stroke="#bebebe" x:Name="ball2" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" />
+
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                 Stretch="Uniform" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left"
+                 RenderTransformOrigin="0.5, 0.5">
+            <Canvas Width="42" Height="59">
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0" Y="0"/>
+                </Canvas.RenderTransform>
+                <Canvas.Resources/>
+                <!--Unknown tag: sodipodi:namedview-->
+                <!--Unknown tag: metadata-->
+                <Canvas>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="M 0.36588698 0.47627018 41.791553 29.879279" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="M 0.36588698 0.47627018 41.791553 29.879279" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="M 0.36588398 59.282292 41.791553 29.879279" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+            </Canvas>
+            <Viewbox.RenderTransform>
+                <ScaleTransform ScaleX="-1"/>
+            </Viewbox.RenderTransform>
+        </Viewbox>
+
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                 Stretch="Uniform" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right">
+            <Canvas Width="42" Height="59">
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="0" Y="0"/>
+                </Canvas.RenderTransform>
+                <Canvas.Resources/>
+                <!--Unknown tag: sodipodi:namedview-->
+                <!--Unknown tag: metadata-->
+                <Canvas>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="M 0.36588698 0.47627018 41.791553 29.879279" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="M 0.36588698 0.47627018 41.791553 29.879279" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="M 0.36588398 59.282292 41.791553 29.879279" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+            </Canvas>
+        </Viewbox>
     </Grid>
 </Window>
 

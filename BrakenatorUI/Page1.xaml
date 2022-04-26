@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:Brakenator"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Page1" x:Name="page_1">
+      Title="Page1" x:Name="page_1"
+      Foreground="#bebebe">
 
 
     <Grid>
@@ -14,7 +15,7 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
@@ -22,10 +23,11 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Button Grid.Column="3" Grid.Row="2" Click="Button_Click"/>
-        <TextBlock x:Name="number" Grid.Column="2" Grid.Row="2" Text="Hello"/>
+        <TextBlock x:Name="brakingDistance" Grid.Column="2" Grid.Row="2" Text="123 m"/>
+        <TextBlock x:Name="brakingTime" Grid.Column="2" Grid.Row="3" Text="123 s"/>
     </Grid>
 </Page>

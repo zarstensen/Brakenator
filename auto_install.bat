@@ -1,3 +1,3 @@
-mkdir build/conan
-cd build/conan
-conan install ../..
+mkdir build\conan
+cd build\conan
+conan install ..\.. --build
