@@ -397,7 +397,17 @@ BN_ERR BN_API sampleElevation(double lat, double lon)
             curl_easy_setopt(curlh, CURLOPT_WRITEDATA, &response);
             curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, curlGetCallback);
             
-            curl_easy_perform(curlh);
+            int res = curl_easy_perform(curlh);
+            
+            if(res == CURLE_COULDNT_RESOLVE_HOST)
+            {
+                return BN_HOST_ERROR;
+            }
+            else if(res != CURLE_OK)
+            {
+                return BN_UNKNOWN;
+            }
+
             curl_easy_cleanup(curlh);
 
             rjson::Document json_response;
