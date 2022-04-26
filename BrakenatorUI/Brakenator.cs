@@ -22,7 +22,7 @@ namespace Brakenator
 			public ushort sub_group;
 			public ushort severity;
 		}
-		struct BrakingInfo
+		public struct BrakingInfo
 		{
 			double distance;
 			double time;
