@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Brakenator
 {
@@ -22,19 +23,13 @@ namespace Brakenator
     /// </summary>
     public partial class Page1 : Page
     {
-
-
-        [DllImport("kernel32.dll")]
-        public static extern bool AllocConsole();
-
-
-        public Page1()
+        MainWindow mainWindow;
+        public Page1(MainWindow _mainWindow)
         {
-            AllocConsole();
+            mainWindow = _mainWindow;
             InitializeComponent();
-            BN.setWeatherKey(@"C:\Users\kamjo\Documents\skole\PROG\Afleveringer\Brakenator\build\weather_key.txt");
-            BN.autoWeather(55.777960, 12.527173);
-            number.Text = BN.getWeatherGroup().ToString();
+            
+            number.Text = Directory.GetCurrentDirectory();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

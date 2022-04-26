@@ -20,8 +20,10 @@ namespace Brakenator
     /// </summary>
     public partial class Page2 : Page
     {
-        public Page2()
+        MainWindow mainWindow;
+        public Page2(MainWindow _mainWindow)
         {
+            mainWindow = _mainWindow;
             InitializeComponent();
         }
 

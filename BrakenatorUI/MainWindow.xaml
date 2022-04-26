@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" 
         SizeChanged="Window_SizeChanged" FontSize="12"
-        Background="#171720" Foreground="#bebebe">
+        Background="#171720" Foreground="#bebebe"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseLeftButtonUp="Window_MouseLeftButtonUp">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -25,10 +27,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Frame x:Name="main_frame" Grid.Row="1" Grid.ColumnSpan="7" NavigationUIVisibility="Hidden"/>
-        <Button Click="page1Button_Click" Grid.Row="2" Content="Page 1"/>
-        <Button Click="page2Button_Click" Grid.Row="2" Grid.Column="1" Content="Page 2"/>
-        <TextBlock x:Name="brakingDistance" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="5" Text="Braking Distance"/>
-        <TextBlock x:Name="clock" Text="00:00" />
+
+        <Ellipse Fill="#bebebe" Stroke="#bebebe" x:Name="ball1" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" />
+        <Ellipse Stroke="#bebebe" x:Name="ball2" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" />
+
+        <Border  BorderBrush="#bebebe" BorderThickness="0,0,1,1">
+            <TextBlock x:Name="clock" Text="00:00" HorizontalAlignment="Center"/>
+        </Border>
+
+        <Border BorderBrush="#bebebe" BorderThickness="0,0,1,1" Grid.Column="1" Grid.ColumnSpan="5" >
+            <TextBlock x:Name="brakingDistance" HorizontalAlignment="Center" VerticalAlignment="Top"  Text="Braking Distance"/>
+        </Border>
+        <Image x:Name="weatherIcon" Stretch="Uniform" Grid.Column="6" />
+        <Border BorderBrush="#bebebe"  BorderThickness="0,0,1,1" Grid.Column="6" >
+            <TextBlock />
+        </Border>
     </Grid>
 </Window>
 
