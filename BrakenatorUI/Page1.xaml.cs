@@ -28,12 +28,8 @@ namespace Brakenator
         {
             mainWindow = _mainWindow;
             InitializeComponent();
-            
-            number.Text = Directory.GetCurrentDirectory();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        
     }
 }
