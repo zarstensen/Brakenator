@@ -41,23 +41,24 @@ namespace Brakenator
 		}
 
 		// ============ METHODS ============
-
+		
 		[DllImport(DLL_NAME)]
 		public static extern void setWeatherKey(string path);
-		[DllImport(DLL_NAME)]
-		public static extern void setElevationKey(string path);
 
 		[DllImport(DLL_NAME)]
 		public static extern short getBrakingDistance(double lat, double lon, ref double out_distance, ref double out_time);
 
+		/// @brief overrides the weather status.
+		/// if user is set to true, autoWeather will not be able to override the passed weather type.
+		/// autoWeather can be reenabled using the clearUserWeather() method.
 		[DllImport(DLL_NAME)]
-		public static extern void setWeather(WeatherID weather_id, bool user);
-		///@brief automaticly determines the weather based on the location passed.
-		///@return returns BN_OK on success, and the failure code on a failure.
-
+		public static extern void setWeather(WEATHER weather_id, bool user = true);
+		
+		///@brief clears the user_weather flag, allowing the autoWeather function to modify the current weather.
 		[DllImport(DLL_NAME)]
 		public static extern void clearUserWeather();
-		
+		///@brief automaticly determines the weather based on the location passed.
+		///@return returns BN_OK on success, and the failure code on a failure.
 		[DllImport(DLL_NAME)]
 		public static extern short autoWeather(double lat, double lon);
 
