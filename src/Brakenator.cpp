@@ -38,7 +38,7 @@ double s_prev_lon = INFINITY;
 
 double s_temperature = 0.0;
 
-double s_reaction = 1;
+double s_reaction = 1.25;
 
 Path s_weather_key_file;
 
@@ -414,11 +414,11 @@ BN_ERR BN_API sampleElevation(double lat, double lon)
             json_response.Parse(response.c_str());
 
             // check response status code
-            std::string res = json_response["status"].GetString();
+            std::string res_str = json_response["status"].GetString();
 
-            if(res == "INVALID_REQUEST")
+            if(res_str == "INVALID_REQUEST")
                 return BN_INVALID_REQUEST;
-            else if(res == "SERVER_ERROR")
+            else if(res_str == "SERVER_ERROR")
                 return BN_UNKNOWN;
 
             // store the weather id
