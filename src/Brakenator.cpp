@@ -184,10 +184,9 @@ void getBrakingInfo(double velocity, BrakingInfo* info_out)
     info_out->distance = ipow(velocity, 2) / (2 * dacc);
 
     // use the distance calculated to calculate the time
-    info_out->time = (sqrt(ipow(velocity, 2) + 2 * dacc * info_out->distance) - velocity) / dacc + s_reaction;
+    info_out->time = velocity / dacc + s_reaction;
 
     info_out->distance += velocity * s_reaction;
-    info_out->time += s_reaction
 }
 
 BN_ERR autoWeather(double lat, double lon)
