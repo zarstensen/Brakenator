@@ -176,11 +176,18 @@ void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
     double slope = slopeAngle();
 
+    std::cout << slope << '\n';
+
+    double dacc = GRAVITY * (getMu() * cos(slope) + sin(slope));
+
     // start by calculating the braking distance
-    info_out->distance = -sqrt(ipow(velocity, 2) / GRAVITY * (getMu() * cos(slope) + sin(slope))) + velocity * s_reaction;
+    info_out->distance = ipow(velocity, 2) / (2 * dacc);
 
     // use the distance calculated to calculate the time
-    info_out->time = (sqrt(ipow(velocity, 2) * 2 * GRAVITY * (getMu() * cos(slope) + sin(slope))) * info_out->distance - velocity) / (GRAVITY * (getMu() * cos(slope) + sin(slope))) + s_reaction;
+    info_out->time = (sqrt(ipow(velocity, 2) + 2 * dacc * info_out->distance) - velocity) / dacc + s_reaction;
+
+    info_out->distance += velocity * s_reaction;
+    info_out->time += s_reaction
 }
 
 BN_ERR autoWeather(double lat, double lon)
