@@ -144,7 +144,7 @@ size_t curlGetCallback(char* buffer, size_t size, size_t nitems, void* userdata)
 
     response_str->append(buffer, nitems);
 
-    return size;
+    return nitems;
 }
 
 // ======== EXPORTED FUNCTIONS ========
@@ -175,8 +175,6 @@ void setReactionTime(double reaction)
 void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
     double slope = slopeAngle();
-
-    std::cout << slope << '\n';
 
     double dacc = GRAVITY * (getMu() * cos(slope) + sin(slope));
 
