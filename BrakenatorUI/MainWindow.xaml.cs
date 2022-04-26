@@ -90,17 +90,17 @@ namespace Brakenator
 
             string contentKey;
             
-            switch (currentWeather)
+            switch ((BN.WEATHER)currentWeather)
             {
-                case 0:
+                case BN.WEATHER.BN_DRY:
                     contentKey = ROAD_SUN;
 
                     break;
-                case 1:
+                case BN.WEATHER.BN_WET:
                     contentKey = ROAD_RAIN;
 
                     break;
-                case 2:
+                case BN.WEATHER.BN_ICE:
                     contentKey = ROAD_SNOW;
                     
                     break;
