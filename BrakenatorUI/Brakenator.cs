@@ -51,7 +51,7 @@ namespace Brakenator
 		public static extern void setWeatherKey(string path);
 
 		[DllImport(DLL_NAME)]
-		public static extern short getBrakingDistance(double velocity, ref BrakingInfo out_info);
+		public static extern void getBrakingDistance(double velocity, ref BrakingInfo out_info);
 
 		/// @brief overrides the weather status.
 		/// if user is set to true, autoWeather will not be able to override the passed weather type.
