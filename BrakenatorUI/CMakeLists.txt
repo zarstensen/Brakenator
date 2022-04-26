@@ -41,8 +41,6 @@ target_link_libraries(${PROJECT_NAME} Brakenator)
 # copy dll to binary dir
 if(${BN_BUILD_SHARED})
 
-
-
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory  "$<TARGET_FILE_DIR:Brakenator>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/resources" "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
