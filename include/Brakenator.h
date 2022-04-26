@@ -22,6 +22,7 @@ extern "C"
 		BN_TIMED_OUT,
 		BN_EXCEEDED_API_LIMIT,
 		BN_INVLAID_FILE,
+		BN_HOST_ERROR,
 		BN_UNKNOWN
 	};
 
@@ -70,7 +71,10 @@ extern "C"
 
 	///@brief sets the wether type that should be used when approximating the friction coefficient.
 	/// for details on how to pass the parameters, see https://openweathermap.org/weather-conditions
-	BN_API void setWeather(BN_WEATHER weather);
+	BN_API void setWeather(BN_WEATHER weather, bool user = true);
+	///@brief clears the user_weather flag.
+	/// This allows autoWeather to override the current weather.
+	BN_API void clearUserWeather();
 	///@brief automaticly determines the weather based on the location passed.
 	///@return returns BN_OK on success, and the failure code on a failure.
 	BN_API BN_ERR autoWeather(double lat, double lon);

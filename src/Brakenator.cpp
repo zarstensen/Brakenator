@@ -19,8 +19,10 @@ namespace rjson = rapidjson;
 using BNduration = high_resolution_clock::duration;
 using Path = std::filesystem::path;
 
+// is set to true, if the weather has been set by the user.
+bool s_user_weather = false;
 // the weather id used to approximate the friction coefficient.
-BN_WEATHER s_weather;
+BN_WEATHER s_weather = BN_ICE; // assume worst condition
 // stores whether the current weather was set manually.
 bool s_manual_weather;
 
@@ -138,7 +140,6 @@ double slopeAngle()
 // stores the GET response into the userdata, which is assumed to be a std::string*.
 size_t curlGetCallback(char* buffer, size_t size, size_t nitems, void* userdata)
 {
-    std::cout << nitems << '\n';
     std::string* response_str = (std::string*)userdata;
 
     response_str->append(buffer, nitems);
@@ -148,6 +149,18 @@ size_t curlGetCallback(char* buffer, size_t size, size_t nitems, void* userdata)
 
 // ======== EXPORTED FUNCTIONS ========
 
+BN_API void setWeather(BN_WEATHER weather, bool user)
+{
+    if(user)
+        s_user_weather = true;
+
+    s_weather = weather;
+}
+
+BN_API void clearUserWeather()
+{
+    s_user_weather = false;
+}
 
 void setWeatherKey(const char* path)
 {
@@ -171,7 +184,11 @@ void getBrakingInfo(double velocity, BrakingInfo* info_out)
 }
 
 BN_ERR autoWeather(double lat, double lon)
-{
+{   
+    // if the user has set the weather, do nothing.
+    if(s_user_weather)
+        return BN_OK;
+
     if(s_prev_lat + s_prev_lon == INFINITY || coordToDistance(s_prev_lat, s_prev_lon, lat, lon) > s_min_weather_distance ||
     high_resolution_clock::now().time_since_epoch() - s_weather_last_call > s_weather_freq)
     {
@@ -189,8 +206,6 @@ BN_ERR autoWeather(double lat, double lon)
             if(!std::filesystem::exists(s_weather_key_file))
                 return BN_INVALID_API_KEY;
 
-            std::cout << "FOUND\n";
-
             std::ifstream key_file(s_weather_key_file);
 
             std::string key;
@@ -206,8 +221,6 @@ BN_ERR autoWeather(double lat, double lon)
 
             std::stringstream header;
             header << "https://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
-            
-            std::cout << header.str() << '\n';
 
             curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
             curl_easy_setopt(curlh, CURLOPT_HTTPGET, true);
@@ -217,11 +230,20 @@ BN_ERR autoWeather(double lat, double lon)
             curl_easy_setopt(curlh, CURLOPT_WRITEDATA, &response);
             curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, curlGetCallback);
 
-            curl_easy_perform(curlh);
+            int res = curl_easy_perform(curlh);
 
+            // check if get request succeded
+
+            if(res == CURLE_COULDNT_RESOLVE_HOST)
+            {
+                return BN_HOST_ERROR;
+            }
+            else if(res != CURLE_OK)
+            {
+                return BN_UNKNOWN;
+            }
 
             rjson::Document json_response;
-            std::cout << "RESPONSE: " << response << '\n';
 
             json_response.Parse(response.c_str());
 
@@ -242,7 +264,7 @@ BN_ERR autoWeather(double lat, double lon)
                 }
 
                 if(res_code >= 400)
-                    return BN_UNKNOWN;
+                    return BN_HOST_ERROR;
             }
 
             // store the weather id
@@ -252,19 +274,13 @@ BN_ERR autoWeather(double lat, double lon)
 
             bool is_wet = false;
 
-            std::cout << "CW: " << json_response["current"]["weather"][0]["id"].GetInt() << '\n';
-
             is_wet = isWet(json_response["current"]["weather"][0]["id"].GetInt());
-
-            std::cout << is_wet << '\n';
 
             if(!is_wet)
                 for(uint16_t i = 0; i < local_time->tm_hour && i < 6; i++)
                 {
-                    std::cout << "CWH: " << json_response["hourly"][i]["weather"][0]["id"].GetInt() << '\n';
                     if(isWet(json_response["hourly"][i]["weather"][0]["id"].GetInt()))
-                    {
-                        
+                    { 
                         is_wet = true;
                         break;
                     }
@@ -282,9 +298,36 @@ BN_ERR autoWeather(double lat, double lon)
 
                 curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
 
-                curl_easy_perform(curlh);
+                res = curl_easy_perform(curlh);
+
+                if(res == CURLE_COULDNT_RESOLVE_HOST)
+                {
+                    return BN_HOST_ERROR;
+                }
+                else if(res != CURLE_OK)
+                {
+                    return BN_UNKNOWN;
+                }
 
                 json_response.Parse(response.c_str());
+
+                if(json_response.HasMember("cod"))
+                {
+                    int res_code = json_response["cod"].GetInt();
+
+                    switch(res_code)
+                    {
+                        case 401:
+                            return BN_INVALID_API_KEY;
+                        case 429:
+                            return BN_EXCEEDED_API_LIMIT;
+                        case 408:
+                            return BN_TIMED_OUT;
+                    }
+
+                    if(res_code >= 400)
+                        return BN_HOST_ERROR;
+                }
 
                 if(isWet(json_response["current"]["weather"][0]["id"].GetInt()))
                 {
@@ -312,8 +355,6 @@ BN_ERR autoWeather(double lat, double lon)
                 s_weather = BN_DRY;
             else if(is_wet)
                 s_weather = current_temp < 0 ? BN_ICE : BN_WET;
-
-            std::cout << "IW: " << is_wet << " CW: " << s_weather << "CT: " << current_temp << '\n';
         }
         else
         {

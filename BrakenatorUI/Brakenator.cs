@@ -51,9 +51,12 @@ namespace Brakenator
 		public static extern short getBrakingDistance(double lat, double lon, ref double out_distance, ref double out_time);
 
 		[DllImport(DLL_NAME)]
-		public static extern void setWeather(WeatherID weather_id);
+		public static extern void setWeather(WeatherID weather_id, bool user);
 		///@brief automaticly determines the weather based on the location passed.
 		///@return returns BN_OK on success, and the failure code on a failure.
+
+		[DllImport(DLL_NAME)]
+		public static extern void clearUserWeather();
 		
 		[DllImport(DLL_NAME)]
 		public static extern short autoWeather(double lat, double lon);
