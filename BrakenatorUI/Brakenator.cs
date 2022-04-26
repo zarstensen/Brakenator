@@ -22,6 +22,11 @@ namespace Brakenator
 			public ushort sub_group;
 			public ushort severity;
 		}
+		struct BrakingInfo
+		{
+			double distance;
+			double time;
+		};
 		public enum ERR: short
         {
 			BN_OK = 0,
@@ -46,7 +51,7 @@ namespace Brakenator
 		public static extern void setWeatherKey(string path);
 
 		[DllImport(DLL_NAME)]
-		public static extern short getBrakingDistance(double lat, double lon, ref double out_distance, ref double out_time);
+		public static extern short getBrakingDistance(double velocity, ref BrakingInfo out_info);
 
 		/// @brief overrides the weather status.
 		/// if user is set to true, autoWeather will not be able to override the passed weather type.
