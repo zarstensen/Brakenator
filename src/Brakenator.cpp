@@ -335,7 +335,7 @@ BN_ERR autoWeather(double lat, double lon)
             if(current_weather_id >= 201 && current_weather_id <= 202 || // thunder and rain
                current_weather_id >= 313 && current_weather_id <= 314 || // drizzle and rain
                current_weather_id >= 501 && current_weather_id <= 504 ||
-               current_weather_id >= 521 && current_weather_id <= 531 || // rain
+               current_weather_id >= 521 && current_weather_id <= 531    // rain
             )
             {
                 s_weather = BN_WLAYER;

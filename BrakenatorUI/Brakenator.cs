@@ -44,6 +44,7 @@ namespace Brakenator
 		{
 			BN_DRY,
 			BN_WET,
+			BN_WLAYER,
 			BN_ICY
 		}
 

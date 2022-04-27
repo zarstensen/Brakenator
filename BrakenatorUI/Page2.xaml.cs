@@ -27,9 +27,9 @@ namespace Brakenator
             InitializeComponent();
         }
 
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SunIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            mainWindow.brakingDistance.Text = "yes";
         }
     }
 }

@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Timers;
-using System.Windows.Forms;
 using System.IO;
 
 namespace Brakenator
@@ -26,7 +25,7 @@ namespace Brakenator
     public partial class MainWindow : Window
     {
 
-        short currentWeather;
+        BN.WEATHER currentWeather;
         int pageNumber = 1;
         Page1 page1;
         Page2 page2;
@@ -34,13 +33,27 @@ namespace Brakenator
         const string ROAD_SUN = "road_sun";
         const string ROAD_RAIN = "road_rain";
         const string ROAD_SNOW = "road_snow";
+        const string ROAD_WATERLAYER = "road_waterlayer";
 
 
         public MainWindow()
         {
+
             page1 = new Page1(this);
             page2 = new Page2(this);
             BN.setWeatherKey(Directory.GetCurrentDirectory() + @"\weather_key.txt");
+
+            BN.addCoeff(BN.WEATHER.BN_DRY, 50, 1);
+            BN.addCoeff(BN.WEATHER.BN_WET, 50, .5);
+            BN.addCoeff(BN.WEATHER.BN_WLAYER, 50, .4);
+            BN.addCoeff(BN.WEATHER.BN_ICY, 50, .1);
+            BN.addCoeff(BN.WEATHER.BN_DRY, 90, .95);
+            BN.addCoeff(BN.WEATHER.BN_WET, 90, .2);
+            BN.addCoeff(BN.WEATHER.BN_WLAYER, 90, .1);
+            BN.addCoeff(BN.WEATHER.BN_DRY, 130, .9);
+            BN.addCoeff(BN.WEATHER.BN_WET, 130, .2);
+            BN.addCoeff(BN.WEATHER.BN_WLAYER, 130, .1);
+
             InitializeComponent();
             main_frame.Content = page1;
             InitTimer();
@@ -83,34 +96,49 @@ namespace Brakenator
             System.Windows.Threading.DispatcherPriority.Normal,
             new Action(() => { clock.Text = time; } ));
 
+            if ()
+            {
+                //BN.autoWeather(55.779037, 12.532600);
+                BN.autoWeather(67.621862, 59.1948173);
+                currentWeather = BN.getWeather();
+            }
 
-            //BN.autoWeather(55.777960, 12.527173);
-            short return_code = BN.autoWeather(51.142622, 9.493477);
-            currentWeather = (short)BN.getWeather();
-
-            string contentKey;
-            
-            switch ((BN.WEATHER)currentWeather)
+            string contentKey = "";
+            string sunKey = "_unpressed";
+            string rainKey = "_unpressed";
+            string waterlayerKey = "_unpressed";
+            string snowKey = "_unpressed";
+            switch (currentWeather)
             {
                 case BN.WEATHER.BN_DRY:
                     contentKey = ROAD_SUN;
+                    sunKey = "_pressed";
+
 
                     break;
                 case BN.WEATHER.BN_WET:
                     contentKey = ROAD_RAIN;
+                    rainKey = "_pressed";
 
                     break;
-                case BN.WEATHER.BN_ICE:
+                case BN.WEATHER.BN_WLAYER:
+                    contentKey = ROAD_WATERLAYER;
+                    waterlayerKey = "_pressed";
+                    break;
+                case BN.WEATHER.BN_ICY:
                     contentKey = ROAD_SNOW;
-                    
+                    snowKey = "_pressed";
                     break;
-                default:
-                    contentKey = "";
-                    break;
+
             }
             clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
-            new Action(() => { weatherIcon.Content = System.Windows.Application.Current.FindResource("road_sun"); }));
+            new Action(() => { weatherIcon.Content = Application.Current.FindResource(contentKey);
+                page2.sunIcon.Content = Application.Current.FindResource(ROAD_SUN + sunKey);
+                page2.rainIcon.Content = Application.Current.FindResource(ROAD_RAIN + rainKey);
+                page2.waterlayerIcon.Content = Application.Current.FindResource(ROAD_WATERLAYER+ waterlayerKey);
+                page2.snowIcon.Content = Application.Current.FindResource(ROAD_SNOW + snowKey);
+            }));
             
 
             //get braking info

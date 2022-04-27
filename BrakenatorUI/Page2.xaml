@@ -10,6 +10,34 @@
       Foreground="#bebebe">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
 
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
+                 Grid.Column="1"
+                 MouseLeftButtonUp="SunIcon_MouseLeftButtonUp">
+            <ContentPresenter x:Name="sunIcon" />
+        </Viewbox>
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
+                 Grid.Column="3">
+            <ContentPresenter x:Name="rainIcon" />
+        </Viewbox>
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
+                 Grid.Column="5">
+            <ContentPresenter x:Name="waterlayerIcon" />
+        </Viewbox>
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
+                 Grid.Column="7">
+            <ContentPresenter x:Name="snowIcon" />
+        </Viewbox>
     </Grid>
 </Page>
