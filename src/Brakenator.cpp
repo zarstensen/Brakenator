@@ -337,7 +337,10 @@ BN_ERR autoWeather(double lat, double lon)
                current_weather_id >= 501 && current_weather_id <= 504 ||
                current_weather_id >= 521 && current_weather_id <= 531 || // rain
             )
-                return BN_WLAYER;
+            {
+                s_weather = BN_WLAYER;
+                return BN_OK;
+            }
 
             is_wet = isWet(current_weather_id);
 
