@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 
 extern "C"
 {
@@ -23,6 +24,7 @@ extern "C"
 		BN_EXCEEDED_API_LIMIT,
 		BN_INVLAID_FILE,
 		BN_HOST_ERROR,
+		BN_INVALID_ARGS,
 		BN_UNKNOWN
 	};
 
@@ -30,7 +32,8 @@ extern "C"
 	{
 		BN_DRY,
 		BN_WET,
-		BN_ICE
+		BN_WLAYER,
+		BN_ICY
 	};
 
 	///@brief structure containing information about a weather type.
@@ -53,13 +56,22 @@ extern "C"
 		}
 	};
 
+	///@brief structure containing information about the braking of the car.
 	struct BrakingInfo
 	{
+		///@brief the distance the car will have to travel, before its velocity reaches 0.
 		double distance;
+		///@brief the time interval the car will have to brake in, before its velocity reaches 0.
 		double time;
 	};
 
+	///@brief adds an entry into the velocity-friction coefficient table for the passed weather id.
+	BN_API void addCoeff(BN_WEATHER weather, double velocity, double coeff);
+	///@brief adds an entry into the velocity-friction coefficient table for the passed weather id and velocity.
+	BN_API void removeCoeff(BN_WEATHER weather, double velocity, double coeff);
+
 	///@brief retrieves the braking distance and time estimated from the current conditions of the roead.
+	///@param velocity the current velocity of the car, in km/h.
 	///@param info_out a pointer to the structure of which getBrakingInfo should write its result to.
 	BN_API void getBrakingInfo(double velocity, BrakingInfo* info_out);
 	

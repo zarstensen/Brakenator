@@ -10,6 +10,7 @@
 #include <sstream>
 #include <chrono>
 #include <filesystem>
+#include <array>
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -22,7 +23,7 @@ using Path = std::filesystem::path;
 // is set to true, if the weather has been set by the user.
 bool s_user_weather = false;
 // the weather id used to approximate the friction coefficient.
-BN_WEATHER s_weather = BN_ICE; // assume worst condition
+BN_WEATHER s_weather = BN_ICY; // assume worst condition
 // stores whether the current weather was set manually.
 bool s_manual_weather;
 
@@ -51,7 +52,63 @@ struct ElevationPoint
     double elevation = INFINITY;
 };
 
+
 std::pair<ElevationPoint, ElevationPoint> s_slope_elevations;
+
+///@brief structure containing a friction coefficient table, to be used by the Brakenator library in order to determine the cars braking info.
+struct FrictionCoeffs
+{
+    // FrictionCoeffs(std::pair<double, double>* dry, std::pair<double, double>* wet);
+
+    ///@brief an array of maps mapping the velocity of the car depending on the road condition.
+    /// the index of the array is the corresponding BN_WEATHER condition enum value.
+    std::array<std::map<double, double>, 4> coeffs;
+
+    double getCoeff(BN_WEATHER weather, double velocity)
+    {
+        auto m_iter = coeffs[weather].begin();
+
+        // use the first two table values as the default values
+
+        double a_vel = m_iter->first;
+        double a_coeff = m_iter->second;
+        
+        m_iter++;
+
+        // if only one coefficient is stored, just return this value no matter the velocity.
+        if(m_iter == coeffs[weather].end())
+            return a_coeff;
+
+        double b_vel = m_iter->first;
+        double b_coeff = m_iter->second;
+
+        // find the two table values right before or after the passed velocity.
+        // if the velocity is outside the table velocities, the final values will either be the first two table values or the last two table values.
+        for(;m_iter != coeffs[weather].end(); m_iter++)
+        {
+            if(velocity > m_iter->first)
+                break;
+            
+            b_vel = a_vel;
+            b_coeff = a_coeff;
+
+            b_vel = m_iter->first;
+            a_coeff = m_iter->second;
+        }
+
+        // interpolate linearly between the velocities
+
+        double a = (a_coeff - b_coeff) / (a_vel - b_vel);
+        double b = a_coeff - a * a_vel;
+
+        double res_coeff = a * velocity + b;
+
+        return res_coeff;
+    }
+
+};
+
+FrictionCoeffs s_friction_coeffs;
 
 // ======== PRIVATE FUNCTIONS ========
 
@@ -73,26 +130,6 @@ constexpr double dtor(double deg)
     return M_PI / 180 * deg;
 }
 
-// get the estimated friction coefficient based on the current weather.
-double getMu()
-{
-    switch(s_weather)
-    {
-        case BN_DRY:
-            return 0.8;
-            break;
-        case BN_WET:
-            return 0.6;
-            break;
-        case BN_ICE:
-            return 0.3;
-            break;
-        default:
-            // this should never be hit.
-            return -1;
-    }
-}
-
 bool isWet(uint16_t wid)
 {
     uint16_t group = wid / 100;
@@ -107,7 +144,7 @@ double coordToDistance(double lat1, double lon1, double lat2 = 0, double lon2 = 
     // lattitude will always have an equal length between each degree
     
     // average radius of the earth
-    constexpr double EARTH_RAD = 6371.290681854754;
+    static constexpr double EARTH_RAD = 6371.290681854754;
     
     double d_lat = dtor(lat2 - lat1);
     double d_lon = dtor(lon2 - lon1);
@@ -149,7 +186,17 @@ size_t curlGetCallback(char* buffer, size_t size, size_t nitems, void* userdata)
 
 // ======== EXPORTED FUNCTIONS ========
 
-BN_API void setWeather(BN_WEATHER weather, bool user)
+void addCoeff(BN_WEATHER weather, double velocity, double coeff)
+{
+    s_friction_coeffs.coeffs[weather][velocity] = coeff;
+}
+
+void removeCoeff(BN_WEATHER weather, double velocity)
+{
+    s_friction_coeffs.coeffs[weather].erase(velocity);
+}
+
+void setWeather(BN_WEATHER weather, bool user)
 {
     if(user)
         s_user_weather = true;
@@ -157,7 +204,7 @@ BN_API void setWeather(BN_WEATHER weather, bool user)
     s_weather = weather;
 }
 
-BN_API void clearUserWeather()
+void clearUserWeather()
 {
     s_user_weather = false;
 }
@@ -174,9 +221,11 @@ void setReactionTime(double reaction)
 
 void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
+    // convert km/h to m/s
+    velocity /= 3.6;
     double slope = slopeAngle();
 
-    double dacc = GRAVITY * (getMu() * cos(slope) + sin(slope));
+    double dacc = GRAVITY * (s_friction_coeffs.getCoeff(s_weather, velocity) * cos(slope) + sin(slope));
 
     // start by calculating the braking distance
     info_out->distance = ipow(velocity, 2) / (2 * dacc);
@@ -235,9 +284,6 @@ BN_ERR autoWeather(double lat, double lon)
             curl_easy_setopt(curlh, CURLOPT_WRITEFUNCTION, curlGetCallback);
 
             int res = curl_easy_perform(curlh);
-
-            std::cout << response << '\n';
-
             // check if get request succeded
 
             if(res == CURLE_COULDNT_RESOLVE_HOST)
@@ -354,13 +400,12 @@ BN_ERR autoWeather(double lat, double lon)
 
             }
 
-
             curl_easy_cleanup(curlh);
 
             if(!is_wet)
                 s_weather = BN_DRY;
             else if(is_wet)
-                s_weather = current_temp < 0 ? BN_ICE : BN_WET;
+                s_weather = current_temp < 0 ? BN_ICY : BN_WET;
         }
         else
         {

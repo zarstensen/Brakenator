@@ -36,6 +36,7 @@ namespace Brakenator
 			BN_EXCEEDED_API_LIMIT,
 			BN_INVLAID_FILE,
 			BN_HOST_ERROR,
+			BN_INVALID_ARGS,
 			BN_UNKNOWN
 		}
 
@@ -43,11 +44,18 @@ namespace Brakenator
 		{
 			BN_DRY,
 			BN_WET,
-			BN_ICE
+			BN_ICY
 		}
 
 		// ============ METHODS ============
 		
+		[DllImport(DLL_NAME)]
+		public static extern void addCoeff(WEATHER weather_id, double velocity, double coeff);
+
+
+		[DllImport(DLL_NAME)]
+		public static extern void removeCoeff(WEATHER weather_id, double velocity);
+
 		[DllImport(DLL_NAME)]
 		public static extern void setWeatherKey(string path);
 
