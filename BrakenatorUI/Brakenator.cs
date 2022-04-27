@@ -72,6 +72,10 @@ namespace Brakenator
 		///@brief clears the user_weather flag, allowing the autoWeather function to modify the current weather.
 		[DllImport(DLL_NAME)]
 		public static extern void clearUserWeather();
+		///@brief returns wether the current weather has been set by the user.
+		[DllImport(DLL_NAME)]
+
+		public static extern bool isUserWeather();
 		///@brief automaticly determines the weather based on the location passed.
 		///@return returns BN_OK on success, and the failure code on a failure.
 		[DllImport(DLL_NAME)]

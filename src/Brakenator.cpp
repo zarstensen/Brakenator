@@ -209,6 +209,11 @@ void clearUserWeather()
     s_user_weather = false;
 }
 
+bool isUserWeather()
+{
+    return s_user_weather;
+}
+
 void setWeatherKey(const char* path)
 {
     s_weather_key_file = path;
