@@ -322,11 +322,20 @@ BN_ERR autoWeather(double lat, double lon)
             // store the weather id
 
 
+            uint16_t current_weather_id = json_response["current"]["weather"][0]["id"].GetInt();
             double current_temp = json_response["current"]["temp"].GetDouble();
 
             bool is_wet = false;
 
-            is_wet = isWet(json_response["current"]["weather"][0]["id"].GetInt());
+            // if it is currently raining alot, assume the road is layered with water.
+            if(current_weather_id >= 201 && current_weather_id <= 202 || // thunder and rain
+               current_weather_id >= 313 && current_weather_id <= 314 || // drizzle and rain
+               current_weather_id >= 501 && current_weather_id <= 504 ||
+               current_weather_id >= 521 && current_weather_id <= 531 || // rain
+            )
+                return BN_WLAYER;
+
+            is_wet = isWet(current_weather_id);
 
             if(!is_wet)
                 for(uint16_t i = 0; i < local_time->tm_hour && i < 6; i++)
