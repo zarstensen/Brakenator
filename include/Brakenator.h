@@ -87,6 +87,8 @@ extern "C"
 	///@brief clears the user_weather flag.
 	/// This allows autoWeather to override the current weather.
 	BN_API void clearUserWeather();
+	///@brief returns wether the current weather has been set by the user.
+	BN_API bool isUserWeather();
 	///@brief automaticly determines the weather based on the location passed.
 	///@return returns BN_OK on success, and the failure code on a failure.
 	BN_API BN_ERR autoWeather(double lat, double lon);
