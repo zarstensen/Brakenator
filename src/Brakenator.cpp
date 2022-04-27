@@ -189,6 +189,7 @@ void getBrakingInfo(double velocity, BrakingInfo* info_out)
 
 BN_ERR autoWeather(double lat, double lon)
 {   
+    std::cout << "HEY HO\n";
     // if the user has set the weather, do nothing.
     if(s_user_weather)
         return BN_OK;
@@ -224,7 +225,9 @@ BN_ERR autoWeather(double lat, double lon)
             // setup curl get request for the current weather
 
             std::stringstream header;
-            header << "http://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
+            header << "http://api.openweathermap.org/data/2.5/onecall/timemachine?units=metric&dt=" << std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() - 60 << "&lat=" << lat << "&lon=" << lon << "&appid=" << key;
+
+            std::cout << header.str() << '\n';
 
             curl_easy_setopt(curlh, CURLOPT_URL, header.str().c_str());
             curl_easy_setopt(curlh, CURLOPT_HTTPGET, true);
@@ -257,7 +260,8 @@ BN_ERR autoWeather(double lat, double lon)
 
             if(json_response.HasMember("cod"))
             {
-                int res_code = json_response["cod"].GetInt();
+                std::string res_str = json_response["cod"].GetString();
+                int res_code = std::stoi(res_str);
 
                 switch(res_code)
                 {
@@ -296,7 +300,7 @@ BN_ERR autoWeather(double lat, double lon)
             // if the time is less than 6 o clock, the previous day must be retrieved
             if(!is_wet && local_time->tm_hour < 6)
             {
-                size_t new_time = (std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() / 86400) * 86400 - 1 ;
+                size_t new_time = (std::chrono::duration_cast<std::chrono::seconds>(current_tpoint.time_since_epoch()).count() / 86400) * 86400 - 1;
 
                 // prepare new request for the previous day.
                 header.clear();
@@ -319,7 +323,8 @@ BN_ERR autoWeather(double lat, double lon)
 
                 if(json_response.HasMember("cod"))
                 {
-                    int res_code = json_response["cod"].GetInt();
+                    std::string res_str = json_response["cod"].GetString();
+                    int res_code = std::stoi(res_str);
 
                     switch(res_code)
                     {
