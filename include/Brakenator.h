@@ -65,10 +65,15 @@ extern "C"
 		double time;
 	};
 
+	/// @brief initializes curl. Should be called before any other functions.
+	BN_API void BNinit();
+	/// @brief cleansup curl. Should be called before any other functions.
+	BN_API void BNcleanup();
+
 	///@brief adds an entry into the velocity-friction coefficient table for the passed weather id.
 	BN_API void addCoeff(BN_WEATHER weather, double velocity, double coeff);
 	///@brief adds an entry into the velocity-friction coefficient table for the passed weather id and velocity.
-	BN_API void removeCoeff(BN_WEATHER weather, double velocity, double coeff);
+	BN_API void removeCoeff(BN_WEATHER weather, double velocity);
 
 	///@brief retrieves the braking distance and time estimated from the current conditions of the roead.
 	///@param velocity the current velocity of the car, in km/h.

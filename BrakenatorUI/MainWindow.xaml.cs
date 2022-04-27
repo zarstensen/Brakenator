@@ -38,6 +38,7 @@ namespace Brakenator
 
         public MainWindow()
         {
+            BN.BNinit();
 
             page1 = new Page1(this);
             page2 = new Page2(this);
@@ -59,6 +60,12 @@ namespace Brakenator
             InitTimer();
             
         }
+
+        ~MainWindow()
+        {
+            BN.BNcleanup();
+        }
+
         public static Point GetMousePositionWindowsForms()
         {
             var point = System.Windows.Forms.Control.MousePosition;
@@ -96,12 +103,9 @@ namespace Brakenator
             System.Windows.Threading.DispatcherPriority.Normal,
             new Action(() => { clock.Text = time; } ));
 
-            if ()
-            {
-                //BN.autoWeather(55.779037, 12.532600);
-                BN.autoWeather(67.621862, 59.1948173);
-                currentWeather = BN.getWeather();
-            }
+            //BN.autoWeather(55.779037, 12.532600);
+            BN.autoWeather(67.621862, 59.1948173);
+            currentWeather = BN.getWeather();
 
             string contentKey = "";
             string sunKey = "_unpressed";
