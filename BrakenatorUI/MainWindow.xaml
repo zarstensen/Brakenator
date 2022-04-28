@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Brakenator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" 
+        Title="MainWindow" Height="450" Width="800"
         SizeChanged="Window_SizeChanged" FontSize="12"
         Background="#171720" Foreground="#bebebe"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        MouseLeftButtonUp="Window_MouseLeftButtonUp">
+        MouseLeftButtonUp="Window_MouseLeftButtonUp"
+        FontFamily="consolas">
     <Window.Resources>
         <Canvas Width="42" Height="59" x:Key="arrow1" >
             <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
@@ -47,7 +48,7 @@
         </Canvas>
         <Ellipse x:Key="sunny_road" Fill="Blue" Width="10" Height="10"/>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="*"/>
@@ -67,10 +68,10 @@
 
         
         <Border  BorderBrush="#bebebe" BorderThickness="0,0,1,1">
-            <TextBlock x:Name="clock" Text="00:00" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="clock" Text="00:00" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Border>
         <Border BorderBrush="#bebebe" BorderThickness="0,0,1,1" Grid.Column="1" Grid.ColumnSpan="5" >
-            <TextBlock x:Name="brakingDistance" HorizontalAlignment="Center" VerticalAlignment="Top"  Text="Braking Distance"/>
+            <TextBlock x:Name="brakingDistance" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Braking Distance"/>
         </Border>
         
         <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"

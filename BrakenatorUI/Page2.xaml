@@ -13,34 +13,44 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
-                 Grid.Column="1"
+                 Grid.Column="1" VerticalAlignment="Bottom" Grid.RowSpan="2"
                  MouseLeftButtonUp="SunIcon_MouseLeftButtonUp">
             <ContentPresenter x:Name="sunIcon" />
         </Viewbox>
         <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
-                 Grid.Column="3"
+                 Grid.Column="3" VerticalAlignment="Bottom" Grid.RowSpan="2"
                  MouseLeftButtonUp="RainIcon_MouseLeftButtonUp">
             <ContentPresenter x:Name="rainIcon" />
         </Viewbox>
         <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
-                 Grid.Column="5"
+                 Grid.Column="5" VerticalAlignment="Bottom" Grid.RowSpan="2"
                  MouseLeftButtonUp="WaterlayerIcon_MouseLeftButtonUp">
             <ContentPresenter x:Name="waterlayerIcon" />
         </Viewbox>
         <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
-                 Grid.Column="7"
+                 Grid.Column="7" VerticalAlignment="Bottom" Grid.RowSpan="2"
                  MouseLeftButtonUp="SnowIcon_MouseLeftButtonUp">
             <ContentPresenter x:Name="snowIcon" />
         </Viewbox>
+
+        <TextBlock x:Name="sunRoadText" HorizontalAlignment="Center" Text="Dry Road" FontWeight="Bold" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"/>
+        <TextBlock x:Name="rainRoadText" HorizontalAlignment="Center" Text="Wet Road" FontWeight="Bold" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top"/>
+        <TextBlock x:Name="waterlayerRoadText" HorizontalAlignment="Center" Text="Very much water" FontWeight="Bold" Grid.Column="5" Grid.Row="2" VerticalAlignment="Top"/>
+        <TextBlock x:Name="snownRoadText" HorizontalAlignment="Center" Text="Icy Road" FontWeight="Bold" Grid.Column="7" Grid.Row="2" VerticalAlignment="Top"/>
     </Grid>
 </Page>

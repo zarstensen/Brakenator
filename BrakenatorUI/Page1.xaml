@@ -27,7 +27,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="brakingDistance" Grid.Column="2" Grid.Row="2" Text="123 m"/>
-        <TextBlock x:Name="brakingTime" Grid.Column="2" Grid.Row="3" Text="123 s"/>
+        <TextBlock HorizontalAlignment="Right" x:Name="brakingDistance" Grid.Column="2" Grid.Row="2" Text="123 m"/>
+        <TextBlock HorizontalAlignment="Right" x:Name="brakingTime" Grid.Column="2" Grid.Row="3" Text="123 s"/>
     </Grid>
 </Page>

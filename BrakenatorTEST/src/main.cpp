@@ -2,6 +2,7 @@
 
 int main()
 {
+	BNinit();
 	setWeatherKey("weather_key.txt");
 	std::cout << autoWeather(49.08939117171668, 12.90991949851313) << '\n';
 	

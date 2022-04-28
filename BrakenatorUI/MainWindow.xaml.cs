@@ -57,8 +57,8 @@ namespace Brakenator
 
             InitializeComponent();
             main_frame.Content = page1;
+            BN.autoWeather(1, 1);
             StartUpdateLoop();
-            
         }
 
         ~MainWindow()
@@ -72,7 +72,7 @@ namespace Brakenator
             return new Point(point.X, point.Y);
         }
 
-        private System.Timers.Timer timer;
+        
         Point startPoint, endPoint;
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -104,7 +104,10 @@ namespace Brakenator
             new Action(() => { clock.Text = time; } ));
 
             //BN.autoWeather(55.779037, 12.532600);
-            BN.autoWeather(67.621862, 59.1948173);
+            clock.Dispatcher.Invoke(
+            System.Windows.Threading.DispatcherPriority.Normal,
+            new Action(() => { BN.autoWeather(67.621862, 59.1948173); }));
+            
 
             BN.WEATHER w = BN.getWeather();
 
@@ -154,27 +157,37 @@ namespace Brakenator
             new Action(() => { page1.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
                 page1.brakingTime.Text = Math.Round(info.time).ToString() + " s";
             }));
-        }
 
+
+            clock.Dispatcher.Invoke(
+            System.Windows.Threading.DispatcherPriority.Normal,
+            new Action(() => {
+                brakingDistance.Text = main_frame.ActualHeight.ToString();
+            }));
+        }
+        Timer loopTimer;
+        Timer userClearTimer;
         public void StartUpdateLoop()
         {
             //make timer
-            timer = new System.Timers.Timer(250);
-            timer.AutoReset = true;
-            timer.Enabled = true;
-            timer.Elapsed += OnTimedEvent;
+            loopTimer = new System.Timers.Timer(250);
+            loopTimer.Enabled = true;
+            loopTimer.Elapsed += OnTimedEvent;
         }
 
         /// <summary>
         /// starts a timer that clears the user weather data when timeout has been exceeded
         /// </summary>
         /// <param name="timeout">how long before the user weather is cleared (ms).</param>
+        
+
         public void StartUserClearTimeout(int timeout)
         {
             //make timer
-            timer = new System.Timers.Timer(timeout);
-            timer.Enabled = true;
-            timer.Elapsed += ClearUserWeather;
+            userClearTimer = new System.Timers.Timer(timeout);
+            userClearTimer.AutoReset = false;
+            userClearTimer.Enabled = true;
+            userClearTimer.Elapsed += ClearUserWeather;
         }
 
         private void ClearUserWeather(Object source, System.Timers.ElapsedEventArgs e)
@@ -214,13 +227,15 @@ namespace Brakenator
         //changes font size everytime windows is resized
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            const int COLOUMN_COUNT = 7;
-            const double FONT_WEIGHT = .05;
+            const double FONT_WEIGHT = .3;
+            const double BALL_WEIGHT = .4; 
 
             // calculate font size
 
-            double font_size = main_frame.ActualWidth * FONT_WEIGHT;
-            double screen_size = main_frame.ActualWidth;
+            double screen_size = Math.Min(main_frame.ActualWidth, main_frame.ActualHeight / 2.5);
+            double font_size = screen_size * FONT_WEIGHT;
+
+
             brakingDistance.FontSize = font_size;
             clock.FontSize = font_size;
 
@@ -235,11 +250,11 @@ namespace Brakenator
             }
 
             // calculate ball size
-            ball1.Width = screen_size / (COLOUMN_COUNT * 2);
-            ball2.Width = screen_size / (COLOUMN_COUNT * 2);
-            ball1.Height = screen_size / (COLOUMN_COUNT * 2);
-            ball2.Height = screen_size / (COLOUMN_COUNT * 2);
-            
+            ball1.Width = screen_size * BALL_WEIGHT;
+            ball2.Width = screen_size * BALL_WEIGHT;
+            ball1.Height = screen_size * BALL_WEIGHT;
+            ball2.Height = screen_size * BALL_WEIGHT;
+
         }
     }
 }
