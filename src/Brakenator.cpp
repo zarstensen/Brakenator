@@ -1,5 +1,5 @@
 #include "Brakenator.h"
-// 1:25, 
+
 #define _USE_MATH_DEINFES
 #include <cmath>
 #include <string>
@@ -69,31 +69,39 @@ struct FrictionCoeffs
     {
         auto m_iter = coeffs[weather].begin();
 
+        std::cout << "W: " << weather << '\n';
+
         // use the first two table values as the default values
-
-        double a_vel = m_iter->first;
-        double a_coeff = m_iter->second;
-        
-        m_iter++;
-
-        // if only one coefficient is stored, just return this value no matter the velocity.
-        if(m_iter == coeffs[weather].end())
-            return a_coeff;
 
         double b_vel = m_iter->first;
         double b_coeff = m_iter->second;
+        
+        std::cout << "CF: " << m_iter->second << '\n';
+
+        m_iter++;
+
+
+        // if only one coefficient is stored, just return this value no matter the velocity.
+        if(m_iter == coeffs[weather].end())
+            return b_coeff;
+
+        double a_vel = m_iter->first;
+        double a_coeff = m_iter->second;
 
         // find the two table values right before or after the passed velocity.
         // if the velocity is outside the table velocities, the final values will either be the first two table values or the last two table values.
-        for(;m_iter != coeffs[weather].end(); m_iter++)
+        for(;++m_iter != coeffs[weather].end();)
         {
-            if(velocity > m_iter->first)
+            std::cout << 'V' << m_iter->first << ':' << velocity << '\n';
+            if(velocity >= m_iter->first)
                 break;
             
+            std::cout << "M\n";
+
             b_vel = a_vel;
             b_coeff = a_coeff;
 
-            b_vel = m_iter->first;
+            a_vel = m_iter->first;
             a_coeff = m_iter->second;
         }
 
@@ -103,6 +111,9 @@ struct FrictionCoeffs
         double b = a_coeff - a * a_vel;
 
         double res_coeff = a * velocity + b;
+
+        std::cout << a_coeff << ':' << b_coeff << '\n';
+        std::cout << "RCF: " << res_coeff << '\n';
 
         return res_coeff;
     }
@@ -199,7 +210,7 @@ BN_API void BNcleanup()
 
 void addCoeff(BN_WEATHER weather, double velocity, double coeff)
 {
-    s_friction_coeffs.coeffs[weather][velocity] = coeff;
+    s_friction_coeffs.coeffs[weather][velocity / 3.6] = coeff;
 }
 
 void removeCoeff(BN_WEATHER weather, double velocity)
@@ -245,11 +256,15 @@ void setReactionTime(double reaction)
 
 void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
+    std::cout << s_friction_coeffs.coeffs[BN_WLAYER][50] << ':' << BN_WLAYER << '\n';
     // convert km/h to m/s
     velocity /= 3.6;
     double slope = slopeAngle();
 
+    std::cout << "COEFF: " << s_friction_coeffs.getCoeff(s_weather, velocity) << '\n';
+
     double dacc = GRAVITY * (s_friction_coeffs.getCoeff(s_weather, velocity) * cos(slope) + sin(slope));
+
 
     // start by calculating the braking distance
     info_out->distance = ipow(velocity, 2) / (2 * dacc);
