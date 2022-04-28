@@ -86,7 +86,7 @@ namespace Brakenator
 		///@brief automaticly determines the weather based on the location passed.
 		///@return returns BN_OK on success, and the failure code on a failure.
 		[DllImport(DLL_NAME)]
-		public static extern short autoWeather(double lat, double lon);
+		public static extern ERR autoWeather(double lat, double lon);
 
 		///@brief gets the current weather id used to approximate the friction coefficient.
 		[DllImport(DLL_NAME)]

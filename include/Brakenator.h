@@ -36,26 +36,6 @@ extern "C"
 		BN_ICY
 	};
 
-	///@brief structure containing information about a weather type.
-	struct WeatherID
-	{
-		///@brief the last digit in the openweather weather id.
-		/// broadly describes the type of weather.
-		uint16_t group = 0;
-		///@brief the middle digit in the openweather weather id.
-		/// describes a sub group of the current weather type
-		uint8_t sub_group = 0;
-		///@brief the first digit in the openweather weather id.
-		/// describes how severe the current weather type is.
-		uint8_t severity = 0;
-
-		///@brief check if two WeatherID's are equal (true only if all of the attributes are equal)
-		bool operator==(const WeatherID& other)
-		{
-			return group == other.group && sub_group == other.sub_group && severity == other.severity;
-		}
-	};
-
 	///@brief structure containing information about the braking of the car.
 	struct BrakingInfo
 	{
