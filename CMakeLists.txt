@@ -34,9 +34,9 @@ add_library (${PROJECT_NAME}
 )
 endif()
 
-target_compile_options(${PROJECT_NAME} PRIVATE /W4 /external:anglebrackets /external:W0)
 
 if(MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /external:anglebrackets /external:W0)
   target_compile_options(${PROJECT_NAME}  PUBLIC "/ZI")
   target_link_options(${PROJECT_NAME}  PUBLIC "/INCREMENTAL")
 endif()
