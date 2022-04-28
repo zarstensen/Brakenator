@@ -25,7 +25,7 @@ namespace Brakenator
     public partial class MainWindow : Window
     {
 
-        BN.WEATHER currentWeather;
+        public BN.WEATHER currentWeather;
         int pageNumber = 1;
         Page1 page1;
         Page2 page2;
@@ -56,7 +56,7 @@ namespace Brakenator
 
             InitializeComponent();
             main_frame.Content = page1;
-            InitTimer();
+            StartUpdateLoop();
             
         }
         public static Point GetMousePositionWindowsForms()
@@ -96,19 +96,17 @@ namespace Brakenator
             System.Windows.Threading.DispatcherPriority.Normal,
             new Action(() => { clock.Text = time; } ));
 
-            if ()
-            {
-                //BN.autoWeather(55.779037, 12.532600);
-                BN.autoWeather(67.621862, 59.1948173);
-                currentWeather = BN.getWeather();
-            }
+            //BN.autoWeather(55.779037, 12.532600);
+            BN.autoWeather(67.621862, 59.1948173);
+
+            BN.WEATHER w = BN.getWeather();
 
             string contentKey = "";
             string sunKey = "_unpressed";
             string rainKey = "_unpressed";
             string waterlayerKey = "_unpressed";
             string snowKey = "_unpressed";
-            switch (currentWeather)
+            switch (BN.getWeather())
             {
                 case BN.WEATHER.BN_DRY:
                     contentKey = ROAD_SUN;
@@ -151,7 +149,7 @@ namespace Brakenator
             }));
         }
 
-        public void InitTimer()
+        public void StartUpdateLoop()
         {
             //make timer
             timer = new System.Timers.Timer(250);
@@ -160,8 +158,27 @@ namespace Brakenator
             timer.Elapsed += OnTimedEvent;
         }
 
-        //change page function that is called when swipea
-        void changePage(bool direction)
+        /// <summary>
+        /// starts a timer that clears the user weather data when timeout has been exceeded
+        /// </summary>
+        /// <param name="timeout">how long before the user weather is cleared (ms).</param>
+        public void StartUserClearTimeout(int timeout)
+        {
+            //make timer
+            timer = new System.Timers.Timer(timeout);
+            timer.Enabled = true;
+            timer.Elapsed += ClearUserWeather;
+        }
+
+        private void ClearUserWeather(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            BN.clearUserWeather();
+        }
+
+
+
+            //change page function that is called when swipea
+            void changePage(bool direction)
         {
             if (direction)
             {
@@ -211,11 +228,11 @@ namespace Brakenator
             }
 
             // calculate ball size
-
             ball1.Width = screen_size / (COLOUMN_COUNT * 2);
             ball2.Width = screen_size / (COLOUMN_COUNT * 2);
             ball1.Height = screen_size / (COLOUMN_COUNT * 2);
             ball2.Height = screen_size / (COLOUMN_COUNT * 2);
+            
         }
     }
 }
