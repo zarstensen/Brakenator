@@ -32,28 +32,24 @@ namespace Brakenator
         {
             BN.setWeather(BN.WEATHER.BN_DRY);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "1";
         }
 
         private void RainIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BN.setWeather(BN.WEATHER.BN_WET);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "2";
         }
 
         private void WaterlayerIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BN.setWeather(BN.WEATHER.BN_WLAYER);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "3";
         }
 
         private void SnowIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BN.setWeather(BN.WEATHER.BN_ICY);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "4";
         }
     }
 }

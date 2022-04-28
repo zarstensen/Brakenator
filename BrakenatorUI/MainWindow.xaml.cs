@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 
 using System.Timers;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Brakenator
 {
@@ -37,6 +38,7 @@ namespace Brakenator
 
         Thread debugConsoleThrd;
         bool runConsole = false;
+        bool mainPage = true;
 
         const string ROAD_SUN = "road_sun";
         const string ROAD_RAIN = "road_rain";
@@ -47,7 +49,6 @@ namespace Brakenator
         public MainWindow()
         {
             BN.BNinit();
-
             page1 = new Page1(this);
             page2 = new Page2(this);
             BN.setWeatherKey(Directory.GetCurrentDirectory() + @"\weather_key.txt");
@@ -63,12 +64,18 @@ namespace Brakenator
             BN.addCoeff(BN.WEATHER.BN_WET, 130, .2);
             BN.addCoeff(BN.WEATHER.BN_WLAYER, 130, .1);
 
-            debugConsoleThrd = new Thread(debugConsoleThrd);
+
+            debugConsoleThrd = new Thread(() => { this.DebConsoleInput(); });
             runConsole = true;
             debugConsoleThrd.Start();
 
+            
+
             InitializeComponent();
             main_frame.Content = page1;
+            Frame map_frame = (Frame)this.FindResource("map");
+            map_frame.Content = page1;
+
             StartUpdateLoop();
         }
 
@@ -90,18 +97,38 @@ namespace Brakenator
                 Console.Write("value: ");
                 string line = Console.ReadLine();
 
-                if(line == "coord")
+                if (line == "coord")
                 {
 
                     Console.Write("lat: ");
-                    lattitude = double.TryParse(Console.ReadLine());
+                    double.TryParse(Console.ReadLine(), out lattitude);
                     Console.Write("lon: ");
-                    longitude = double.TryParse(Console.ReadLine());
+                    double.TryParse(Console.ReadLine(), out longitude);
                 }
-                else if(line == "vel")
+                else if (line == "vel")
                 {
                     Console.Write("vel: ");
-                    velocity = double.TryParse(Console.ReadLine());
+                    double.TryParse(Console.ReadLine(), out velocity);
+                }
+                else if (line == "map")
+                {
+                    Dispatcher.Invoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new Action(() =>
+                    {
+                        this.Content = this.FindResource("map");
+                        this.Height = 90 * 2;
+                        this.Width = 160 * 2;
+                    }));
+                    
+                }
+                else if (line == "main")
+                {
+                    Dispatcher.Invoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new Action(() => {
+                        this.Content = main;
+                    }));
                 }
                 else
                 {
@@ -125,7 +152,7 @@ namespace Brakenator
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             endPoint = GetMousePositionWindowsForms();
-            if (Math.Abs(endPoint.X - startPoint.X) > main_frame.ActualWidth / 10)
+            if (Math.Abs(endPoint.X - startPoint.X) > 100)
             {
                 bool direction = startPoint.X - endPoint.X > 0;
                 changePage(direction);
@@ -146,7 +173,7 @@ namespace Brakenator
             System.Windows.Threading.DispatcherPriority.Normal,
             new Action(() => { clock.Text = time; } ));
 
-            //BN.autoWeather(55.779037, 12.532600);
+            
             clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
             new Action(() => { BN.autoWeather(lattitude, longitude); }));
@@ -195,21 +222,15 @@ namespace Brakenator
             //get braking info
             BN.BrakingInfo info = new BN.BrakingInfo();
             BN.getBrakingInfo(velocity, ref info);
-            clock.Dispatcher.Invoke(
+            Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
-            new Action(() => { page1.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
+            new Action(() => { 
+                page1.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
                 page1.brakingTime.Text = Math.Round(info.time).ToString() + " s";
             }));
-
-
-            clock.Dispatcher.Invoke(
-            System.Windows.Threading.DispatcherPriority.Normal,
-            new Action(() => {
-                brakingDistance.Text = main_frame.ActualHeight.ToString();
-            }));
         }
-        Timer loopTimer;
-        Timer userClearTimer;
+        System.Timers.Timer loopTimer;
+        System.Timers.Timer userClearTimer;
         public void StartUpdateLoop()
         {
             //make timer
@@ -270,33 +291,40 @@ namespace Brakenator
         //changes font size everytime windows is resized
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            const double FONT_WEIGHT = .3;
-            const double BALL_WEIGHT = .4; 
-
-            // calculate font size
-
-            double screen_size = Math.Min(main_frame.ActualWidth, main_frame.ActualHeight / 2.5);
-            double font_size = screen_size * FONT_WEIGHT;
-
-
-            brakingDistance.FontSize = font_size;
-            clock.FontSize = font_size;
-
-            //change font on pages
-            if (pageNumber == 1)
+            if (mainPage)
             {
+                const double FONT_WEIGHT = .3;
+                const double BALL_WEIGHT = .4; 
+
+                // calculate font size
+
+                double screen_size = Math.Min(main_frame.ActualWidth, main_frame.ActualHeight / 2.5);
+                double font_size = screen_size * FONT_WEIGHT;
+
+
+                brakingDistance.FontSize = font_size;
+                clock.FontSize = font_size;
+
+                //change font on pages
+
                 page1.brakingDistance.FontSize = font_size * 2;
                 page1.brakingTime.FontSize = font_size * 2;
-            }
-            else
-            { 
-            }
 
-            // calculate ball size
-            ball1.Width = screen_size * BALL_WEIGHT;
-            ball2.Width = screen_size * BALL_WEIGHT;
-            ball1.Height = screen_size * BALL_WEIGHT;
-            ball2.Height = screen_size * BALL_WEIGHT;
+                page2.sunRoadText.FontSize = font_size * .75;
+                page2.rainRoadText.FontSize = font_size * .75;
+                page2.waterlayerRoadText.FontSize = font_size * .75;
+                page2.snowRoadText.FontSize = font_size * .75;
+
+                // calculate ball size
+                ball1.Width = screen_size * BALL_WEIGHT;
+                ball2.Width = screen_size * BALL_WEIGHT;
+                ball1.Height = screen_size * BALL_WEIGHT;
+                ball2.Height = screen_size * BALL_WEIGHT;
+                }
+            else
+            {
+
+            }
 
         }
     }

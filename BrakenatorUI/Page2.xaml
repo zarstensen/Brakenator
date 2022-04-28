@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Page2"
-      Foreground="#bebebe">
+      Foreground="#bebebe" FontFamily="consolas">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -51,6 +51,6 @@
         <TextBlock x:Name="sunRoadText" HorizontalAlignment="Center" Text="Dry Road" FontWeight="Bold" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"/>
         <TextBlock x:Name="rainRoadText" HorizontalAlignment="Center" Text="Wet Road" FontWeight="Bold" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top"/>
         <TextBlock x:Name="waterlayerRoadText" HorizontalAlignment="Center" Text="Very much water" FontWeight="Bold" Grid.Column="5" Grid.Row="2" VerticalAlignment="Top"/>
-        <TextBlock x:Name="snownRoadText" HorizontalAlignment="Center" Text="Icy Road" FontWeight="Bold" Grid.Column="7" Grid.Row="2" VerticalAlignment="Top"/>
+        <TextBlock x:Name="snowRoadText" HorizontalAlignment="Center" Text="Icy Road" FontWeight="Bold" Grid.Column="7" Grid.Row="2" VerticalAlignment="Top"/>
     </Grid>
 </Page>

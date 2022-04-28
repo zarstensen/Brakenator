@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:Brakenator"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
@@ -11,7 +12,36 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         MouseLeftButtonUp="Window_MouseLeftButtonUp"
         FontFamily="consolas">
+
     <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+
+                            <Border Grid.Row="1">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="White" />
+                                </Border.BorderBrush>
+                                <Border.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1"
+                                   MappingMode="RelativeToBoundingBox"
+                                   StartPoint="0.5,0">
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <ContentPresenter/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Canvas Width="42" Height="59" x:Key="arrow1" >
             <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFBEBEBE" StrokeThickness="0.8" Stroke="#FFBEBEBE" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
                 <Path.Data>
@@ -46,60 +76,61 @@
                 </Path.Data>
             </Path>
         </Canvas>
-        <Ellipse x:Key="sunny_road" Fill="Blue" Width="10" Height="10"/>
+        <Frame x:Key="map"/>
     </Window.Resources>
-    <Grid x:Name="grid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.025*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Frame x:Name="main_frame" Grid.Row="1" Grid.ColumnSpan="7" NavigationUIVisibility="Hidden"/>
+    
+    <GroupBox x:Name="main">
+        <Grid x:Name="grid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.025*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Frame x:Name="main_frame" Grid.Row="1" Grid.ColumnSpan="7" NavigationUIVisibility="Hidden" />
+            <Border  BorderBrush="#bebebe" BorderThickness="0,0,1,1">
+                <TextBlock x:Name="clock" Text="00:00" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+            <Border BorderBrush="#bebebe" BorderThickness="0,0,1,1" Grid.Column="1" Grid.ColumnSpan="5" >
+                <TextBlock x:Name="brakingDistance" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Braking Distance"/>
+            </Border>
 
-        
-        <Border  BorderBrush="#bebebe" BorderThickness="0,0,1,1">
-            <TextBlock x:Name="clock" Text="00:00" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Border>
-        <Border BorderBrush="#bebebe" BorderThickness="0,0,1,1" Grid.Column="1" Grid.ColumnSpan="5" >
-            <TextBlock x:Name="brakingDistance" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Braking Distance"/>
-        </Border>
-        
-        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
-                 Grid.Column="6">
-            <ContentPresenter x:Name="weatherIcon"/>
-        </Viewbox>
-        
-        <Border BorderBrush="#bebebe"  BorderThickness="0,0,1,1" Grid.Column="6" >
-            <TextBlock />
-        </Border>
+            <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform"
+                        Grid.Column="6">
+                <ContentPresenter x:Name="weatherIcon"/>
+            </Viewbox>
 
-        <Ellipse Fill="#bebebe" Stroke="#bebebe" x:Name="ball1" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" />
-        <Ellipse Stroke="#bebebe" x:Name="ball2" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" />
+            <Border BorderBrush="#bebebe"  BorderThickness="0,0,1,1" Grid.Column="6" >
+                <TextBlock />
+            </Border>
 
-        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-                 Stretch="Uniform" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left"
-                 RenderTransformOrigin="0.5, 0.5"
-                 >
-            <ContentPresenter Content="{DynamicResource arrow1}"/>
-            <Viewbox.RenderTransform>
-                <ScaleTransform ScaleX="-1"/>
-            </Viewbox.RenderTransform>
-        </Viewbox>
+            <Ellipse Fill="#bebebe" Stroke="#bebebe" x:Name="ball1" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" />
+            <Ellipse Stroke="#bebebe" x:Name="ball2" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" />
 
-        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-                 Stretch="Uniform" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right">
-            <ContentPresenter Content="{DynamicResource arrow2}"/>
-        </Viewbox>
-    </Grid>
+            <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                        Stretch="Uniform" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5, 0.5"
+                        >
+                <ContentPresenter Content="{DynamicResource arrow1}"/>
+                <Viewbox.RenderTransform>
+                    <ScaleTransform ScaleX="-1"/>
+                </Viewbox.RenderTransform>
+            </Viewbox>
+
+            <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                        Stretch="Uniform" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right">
+                <ContentPresenter Content="{DynamicResource arrow2}"/>
+            </Viewbox>
+        </Grid>
+    </GroupBox>
 </Window>
 
