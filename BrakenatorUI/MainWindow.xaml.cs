@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -30,6 +31,13 @@ namespace Brakenator
         Page1 page1;
         Page2 page2;
 
+        double velocity = 0;
+        double lattitude = 0;
+        double longitude = 0;
+
+        Thread debugConsoleThrd;
+        bool runConsole = false;
+
         const string ROAD_SUN = "road_sun";
         const string ROAD_RAIN = "road_rain";
         const string ROAD_SNOW = "road_snow";
@@ -55,17 +63,52 @@ namespace Brakenator
             BN.addCoeff(BN.WEATHER.BN_WET, 130, .2);
             BN.addCoeff(BN.WEATHER.BN_WLAYER, 130, .1);
 
+            debugConsoleThrd = new Thread(debugConsoleThrd);
+            runConsole = true;
+            debugConsoleThrd.Start();
+
             InitializeComponent();
             main_frame.Content = page1;
-            BN.autoWeather(1, 1);
             StartUpdateLoop();
         }
 
         ~MainWindow()
         {
+            runConsole = false;
+            debugConsoleThrd.Join();
             BN.BNcleanup();
         }
 
+        [DllImport("Kernel32.dll")]
+        public static extern bool AllocConsole();
+        public void DebConsoleInput()
+        {
+            AllocConsole();
+            
+            while(runConsole)
+            {
+                Console.Write("value: ");
+                string line = Console.ReadLine();
+
+                if(line == "coord")
+                {
+
+                    Console.Write("lat: ");
+                    lattitude = double.TryParse(Console.ReadLine());
+                    Console.Write("lon: ");
+                    longitude = double.TryParse(Console.ReadLine());
+                }
+                else if(line == "vel")
+                {
+                    Console.Write("vel: ");
+                    velocity = double.TryParse(Console.ReadLine());
+                }
+                else
+                {
+                    Console.WriteLine("Invalid argument!");
+                }
+            }
+        }
         public static Point GetMousePositionWindowsForms()
         {
             var point = System.Windows.Forms.Control.MousePosition;
@@ -106,7 +149,7 @@ namespace Brakenator
             //BN.autoWeather(55.779037, 12.532600);
             clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
-            new Action(() => { BN.autoWeather(67.621862, 59.1948173); }));
+            new Action(() => { BN.autoWeather(lattitude, longitude); }));
             
 
             BN.WEATHER w = BN.getWeather();
@@ -151,7 +194,7 @@ namespace Brakenator
 
             //get braking info
             BN.BrakingInfo info = new BN.BrakingInfo();
-            BN.getBrakingInfo(69, ref info);
+            BN.getBrakingInfo(velocity, ref info);
             clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
             new Action(() => { page1.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
