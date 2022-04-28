@@ -17,12 +17,15 @@ extern "C"
 
 	enum BN_ERR: short
 	{
-		BN_OK = 0,
+		BN_OK,
+		///@brief the API key file was not found, or the key inside the file is invalid.
 		BN_INVALID_API_KEY,
+		///@brief the request was invalid. Gets returned if the coordinate is out of bounds eg.
 		BN_INVALID_REQUEST,
+		///@brief the request has timed out.
 		BN_TIMED_OUT,
+		///@brief the passed API key has no more requests avaliable
 		BN_EXCEEDED_API_LIMIT,
-		BN_INVALID_FILE,
 		BN_HOST_ERROR,
 		BN_INVALID_ARGS,
 		BN_UNKNOWN
@@ -47,7 +50,7 @@ extern "C"
 
 	/// @brief initializes curl. Should be called before any other functions.
 	BN_API void BNinit();
-	/// @brief cleansup curl. Should be called before any other functions.
+	/// @brief cleans up curl. Should be called when the application no longer needs to use this codebase.
 	BN_API void BNcleanup();
 
 	///@brief adds an entry into the velocity-friction coefficient table for the passed weather id.

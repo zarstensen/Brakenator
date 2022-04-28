@@ -15,13 +15,6 @@ namespace Brakenator
     {
 		private const string DLL_NAME = @"Brakenator.dll";
 		// ============ DATATYPES ============
-		// [StructLayout(LayoutKind.Sequential)]  
-		public struct WeatherID
-		{
-			public ushort group;
-			public ushort sub_group;
-			public ushort severity;
-		}
 		public struct BrakingInfo
 		{
 			public double distance;
@@ -49,7 +42,7 @@ namespace Brakenator
 		}
 
 		// ============ METHODS ============
-
+		
 		[DllImport(DLL_NAME)]
 		/// @brief initializes curl. Should be called before any other functions.
 		public static extern void BNinit();
