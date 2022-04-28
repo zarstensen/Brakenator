@@ -94,6 +94,6 @@ namespace Brakenator
 
 		///@brief gets the elevation for the passed location.
 		[DllImport(DLL_NAME)]
-		public static extern ERR getElevation(double lat, double lon, ref double out_elevation);
+		public static extern ERR sampleElevation(double lat, double lon);
 	}
 }
