@@ -293,33 +293,43 @@ namespace Brakenator
         {
             if (mainPage)
             {
-                const double FONT_WEIGHT = .3;
-                const double BALL_WEIGHT = .4; 
+                const double FONT_WEIGHT = 0.1;
+                const double BALL_WEIGHT = 0.125;
+
+                //Calculate ball size
+                double ball_size = Math.Min(this.ActualWidth / 1.1, this.ActualHeight);
 
                 // calculate font size
-
-                double screen_size = Math.Min(main_frame.ActualWidth, main_frame.ActualHeight / 2.5);
-                double font_size = screen_size * FONT_WEIGHT;
+                double clock_size = Math.Min(this.ActualWidth / 2.1, this.ActualHeight);
+                double font_size = clock_size * FONT_WEIGHT;
 
 
                 brakingDistance.FontSize = font_size;
                 clock.FontSize = font_size;
 
                 //change font on pages
+                if (pageNumber == 1)
+                {
+                    page1.brakingDistance.FontSize = font_size * 2.2;
+                    page1.brakingTime.FontSize = font_size * 2.2;
+                }
+                else
+                {
+                }
 
-                page1.brakingDistance.FontSize = font_size * 2;
-                page1.brakingTime.FontSize = font_size * 2;
+                // calculate ball size
+                ball1.Width = ball_size * BALL_WEIGHT;
+                ball2.Width = ball_size * BALL_WEIGHT;
+                ball1.Height = ball_size * BALL_WEIGHT;
+                ball2.Height = ball_size * BALL_WEIGHT;
+
 
                 page2.sunRoadText.FontSize = font_size * .75;
                 page2.rainRoadText.FontSize = font_size * .75;
                 page2.waterlayerRoadText.FontSize = font_size * .75;
                 page2.snowRoadText.FontSize = font_size * .75;
 
-                // calculate ball size
-                ball1.Width = screen_size * BALL_WEIGHT;
-                ball2.Width = screen_size * BALL_WEIGHT;
-                ball1.Height = screen_size * BALL_WEIGHT;
-                ball2.Height = screen_size * BALL_WEIGHT;
+
                 }
             else
             {
