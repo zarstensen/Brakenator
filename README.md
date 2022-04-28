@@ -1,2 +1,2 @@
 # Brakenator
-This software does not actually brake, in contrast to its name.
+This software does not actually brake nor break, in contrast to its name.
