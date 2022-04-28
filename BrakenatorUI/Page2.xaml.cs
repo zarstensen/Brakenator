@@ -20,7 +20,7 @@ namespace Brakenator
     /// </summary>
     public partial class Page2 : Page
     {
-        int userTimeout = 1000;
+        int userTimeout = 5000;
         MainWindow mainWindow;
         public Page2(MainWindow _mainWindow)
         {
@@ -32,28 +32,29 @@ namespace Brakenator
         {
             BN.setWeather(BN.WEATHER.BN_DRY);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "1";
         }
 
         private void RainIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BN.setWeather(BN.WEATHER.BN_WET);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "2";
         }
 
         private void WaterlayerIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BN.setWeather(BN.WEATHER.BN_WLAYER);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "3";
         }
 
         private void SnowIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BN.setWeather(BN.WEATHER.BN_ICY);
             mainWindow.StartUserClearTimeout(userTimeout);
-            mainWindow.brakingDistance.Text = "4";
+        }
+
+        private void Auto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BN.clearUserWeather();
         }
     }
 }
