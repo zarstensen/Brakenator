@@ -49,7 +49,14 @@ namespace Brakenator
 		}
 
 		// ============ METHODS ============
-		
+
+		[DllImport(DLL_NAME)]
+		/// @brief initializes curl. Should be called before any other functions.
+		public static extern void BNinit();
+		[DllImport(DLL_NAME)]
+		/// @brief cleansup curl. Should be called before any other functions.
+		public static extern void BNcleanup();
+
 		[DllImport(DLL_NAME)]
 		public static extern void addCoeff(WEATHER weather_id, double velocity, double coeff);
 

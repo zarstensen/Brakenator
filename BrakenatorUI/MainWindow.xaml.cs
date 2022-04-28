@@ -38,6 +38,7 @@ namespace Brakenator
 
         public MainWindow()
         {
+            BN.BNinit();
 
             page1 = new Page1(this);
             page2 = new Page2(this);
@@ -59,6 +60,12 @@ namespace Brakenator
             StartUpdateLoop();
             
         }
+
+        ~MainWindow()
+        {
+            BN.BNcleanup();
+        }
+
         public static Point GetMousePositionWindowsForms()
         {
             var point = System.Windows.Forms.Control.MousePosition;
