@@ -22,7 +22,7 @@ extern "C"
 		BN_INVALID_REQUEST,
 		BN_TIMED_OUT,
 		BN_EXCEEDED_API_LIMIT,
-		BN_INVLAID_FILE,
+		BN_INVALID_FILE,
 		BN_HOST_ERROR,
 		BN_INVALID_ARGS,
 		BN_UNKNOWN
@@ -34,26 +34,6 @@ extern "C"
 		BN_WET,
 		BN_WLAYER,
 		BN_ICY
-	};
-
-	///@brief structure containing information about a weather type.
-	struct WeatherID
-	{
-		///@brief the last digit in the openweather weather id.
-		/// broadly describes the type of weather.
-		uint16_t group = 0;
-		///@brief the middle digit in the openweather weather id.
-		/// describes a sub group of the current weather type
-		uint8_t sub_group = 0;
-		///@brief the first digit in the openweather weather id.
-		/// describes how severe the current weather type is.
-		uint8_t severity = 0;
-
-		///@brief check if two WeatherID's are equal (true only if all of the attributes are equal)
-		bool operator==(const WeatherID& other)
-		{
-			return group == other.group && sub_group == other.sub_group && severity == other.severity;
-		}
 	};
 
 	///@brief structure containing information about the braking of the car.
