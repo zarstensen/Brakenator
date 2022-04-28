@@ -130,6 +130,10 @@
                         Stretch="Uniform" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right">
                 <ContentPresenter Content="{DynamicResource arrow2}"/>
             </Viewbox>
+            <Rectangle Fill="#00000000" MouseLeftButtonUp="leftArrow_MouseLeftButtonUp" x:Name="leftArrow" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left"/>
+            <Rectangle Fill="#00000000" MouseLeftButtonUp="rightArrow_MouseLeftButtonUp" x:Name="rightArrow" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right"/>
+
+
         </Grid>
     </GroupBox>
 </Window>

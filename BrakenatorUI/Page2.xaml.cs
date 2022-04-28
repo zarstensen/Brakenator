@@ -20,7 +20,7 @@ namespace Brakenator
     /// </summary>
     public partial class Page2 : Page
     {
-        int userTimeout = 1000;
+        int userTimeout = 5000;
         MainWindow mainWindow;
         public Page2(MainWindow _mainWindow)
         {
@@ -50,6 +50,11 @@ namespace Brakenator
         {
             BN.setWeather(BN.WEATHER.BN_ICY);
             mainWindow.StartUserClearTimeout(userTimeout);
+        }
+
+        private void Auto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            BN.clearUserWeather();
         }
     }
 }
