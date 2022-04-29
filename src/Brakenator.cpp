@@ -256,15 +256,13 @@ void setReactionTime(double reaction)
 
 void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
-    std::cout << s_friction_coeffs.coeffs[BN_WLAYER][50] << ':' << BN_WLAYER << '\n';
+    if(velocity < 1e-6)
+    {
     // convert km/h to m/s
     velocity /= 3.6;
     double slope = slopeAngle();
 
-    std::cout << "COEFF: " << s_friction_coeffs.getCoeff(s_weather, velocity) << '\n';
-
     double dacc = GRAVITY * (s_friction_coeffs.getCoeff(s_weather, velocity) * cos(slope) + sin(slope));
-
 
     // start by calculating the braking distance
     info_out->distance = ipow(velocity, 2) / (2 * dacc);
@@ -273,6 +271,12 @@ void getBrakingInfo(double velocity, BrakingInfo* info_out)
     info_out->time = velocity / dacc + s_reaction;
 
     info_out->distance += velocity * s_reaction;
+    }
+    else
+    {
+        info_out->distance = 0;
+        info_out->time = 0;
+    }
 }
 
 BN_ERR autoWeather(double lat, double lon)
