@@ -246,7 +246,7 @@ void setReactionTime(double reaction)
 
 void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
-    if(velocity > 1e-6)
+    if(velocity > 1e-3)
     {
         velocity /= 3.6;
         double slope = slopeAngle();

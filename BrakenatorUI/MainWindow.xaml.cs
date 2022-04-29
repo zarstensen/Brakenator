@@ -150,10 +150,12 @@ namespace Brakenator
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            if((deb_target_velocity + deb_velocity_step * 1.5) < velocity)
+            if ((deb_target_velocity + deb_velocity_step * 1.5) < velocity)
                 velocity -= deb_velocity_step;
             else if ((deb_target_velocity - deb_velocity_step * 1.5) > velocity)
                 velocity += deb_velocity_step;
+            else
+                velocity = deb_target_velocity;
 
             var timeDate = DateTime.Now;
             string hour = timeDate.Hour.ToString().PadLeft(2, '0');
@@ -286,10 +288,8 @@ namespace Brakenator
             BN.clearUserWeather();
         }
 
-
-
-            //change page function that is called when swipea
-            void changePage(bool direction)
+        //change page function that is called when swipea
+         void changePage(bool direction)
         {
             if (direction)
             {
