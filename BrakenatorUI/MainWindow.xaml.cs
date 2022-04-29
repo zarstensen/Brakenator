@@ -32,13 +32,12 @@ namespace Brakenator
         Page1 page1;
         Page2 page2;
 
-        double velocity = 0;
+        double velocity = 20;
         double lattitude = 55.7782614;
         double longitude = 12.5279069;
 
         Thread debugConsoleThrd;
         bool runConsole = false;
-        bool mainPage = true;
 
         const string ROAD_SUN = "road_sun";
         const string ROAD_RAIN = "road_rain";
@@ -114,32 +113,6 @@ namespace Brakenator
                     Console.Write("vel: ");
                     double.TryParse(Console.ReadLine(), out velocity);
                 }
-                else if (line == "map")
-                {
-                    mainPage = false;
-                    Dispatcher.Invoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
-                    new Action(() =>
-                    {
-                        prevHeight = this.Height;
-                        prevWidth = this.Width;
-                        this.Content = this.FindResource("map");
-                        this.Height = 200;
-                        this.Width = 120;
-                    }));
-                    
-                }
-                else if (line == "main")
-                {
-                    mainPage = true;
-                    Dispatcher.Invoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
-                    new Action(() => {
-                        this.Content = main;
-                        this.Height = prevHeight;
-                        this.Width= prevWidth;
-                    }));
-                }
                 else
                 {
                     Console.WriteLine("Invalid argument!");
@@ -162,7 +135,7 @@ namespace Brakenator
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             endPoint = GetMousePositionWindowsForms();
-            if (Math.Abs(endPoint.X - startPoint.X) > 100)
+            if (Math.Abs(endPoint.X - startPoint.X) > 50)
             {
                 bool direction = startPoint.X - endPoint.X > 0;
                 changePage(direction);
@@ -172,7 +145,7 @@ namespace Brakenator
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-
+            velocity++;
             var timeDate = DateTime.Now;
             string hour = timeDate.Hour.ToString().PadLeft(2, '0');
             string minute = timeDate.Minute.ToString().PadLeft(2, '0');
@@ -309,15 +282,36 @@ namespace Brakenator
                     ball2.Fill = new SolidColorBrush(Color.FromRgb(190, 190, 190));
                     ball1.Fill = new SolidColorBrush();
                 }
+                else if (pageNumber == 3)
+                {
+                    pageNumber = 1;
+                    this.Content = main;
+                    main_frame.Content = page1;
+                    this.Height = prevHeight;
+                    this.Width = prevWidth;
+                    main_frame.Refresh();
+                }
             }
             else
-            {
+            { 
                 if (pageNumber == 2)
                 {
                     main_frame.Content = page1;
                     pageNumber = 1;
                     ball1.Fill = new SolidColorBrush(Color.FromRgb(190, 190, 190));
                     ball2.Fill = new SolidColorBrush();
+                }
+                else if (pageNumber == 1)
+                {
+                    pageNumber = 3;
+                    Frame map_frame = (Frame)this.FindResource("map");
+                    map_frame.Content = page1;
+                    prevHeight = this.Height;
+                    prevWidth = this.Width;
+                    this.Content = this.FindResource("map");
+                    this.Height = 200;
+                    this.Width = 120;
+                    map_frame.Refresh();
                 }
             }
         }
@@ -339,7 +333,7 @@ namespace Brakenator
         {
             // calculate font size
             double text_size = Math.Min(this.ActualWidth / 2.1, this.ActualHeight);
-            if (mainPage)
+            if (pageNumber == 1 || pageNumber == 2)
             {
                 const double FONT_WEIGHT = 0.1;
                 const double BALL_WEIGHT = 0.125;
