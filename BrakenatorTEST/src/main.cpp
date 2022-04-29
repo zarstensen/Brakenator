@@ -18,16 +18,18 @@ int main()
 	addCoeff(BN_WET, 130, .2);
 	addCoeff(BN_WLAYER, 130, .1);
 
-	sampleElevation(55.771609, 12.556494);
-	sampleElevation(55.773546, 12.540679);
+	/*sampleElevation(55.771609, 12.556494);
+	sampleElevation(55.773546, 12.540679);*/
 
 	BrakingInfo binf;
 
-	getBrakingInfo(50, &binf);
+	setWeather(BN_WLAYER);
+	getBrakingInfo(100, &binf);
+	setWeather(BN_ICY);
+	getBrakingInfo(100, &binf);
 
 	std::cout << binf.distance << ':' << binf.time << '\n';
 
-	setWeather(BN_WLAYER);
 	std::cout << getWeather() << '\n';
 
 	getBrakingInfo(50, &binf);

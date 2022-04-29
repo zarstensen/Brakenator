@@ -86,18 +86,21 @@ struct FrictionCoeffs
         double a_vel = m_iter->first;
         double a_coeff = m_iter->second;
 
-        // find the two table values right before or after the passed velocity.
-        // if the velocity is outside the table velocities, the final values will either be the first two table values or the last two table values.
-        for(;++m_iter != coeffs[weather].end();)
+        if (velocity > m_iter->first)
         {
-            if(velocity <= m_iter->first)
-                break;
+            // find the two table values right before or after the passed velocity.
+            // if the velocity is outside the table velocities, the final values will either be the first two table values or the last two table values.
+            for (;++m_iter != coeffs[weather].end();)
+            {
+                b_vel = a_vel;
+                b_coeff = a_coeff;
 
-            b_vel = a_vel;
-            b_coeff = a_coeff;
+                a_vel = m_iter->first;
+                a_coeff = m_iter->second;
 
-            a_vel = m_iter->first;
-            a_coeff = m_iter->second;
+                if (velocity < m_iter->first)
+                    break;
+            }
         }
 
         // interpolate linearly between the velocities
