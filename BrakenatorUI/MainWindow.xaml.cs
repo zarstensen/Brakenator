@@ -147,16 +147,15 @@ namespace Brakenator
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            if(deb_target_velocity < velocity)
+            if((deb_target_velocity - deb_velocity_step) < velocity)
                 velocity -= deb_velocity_step;
-            else
+            else if ((deb_target_velocity + deb_velocity_step) > velocity)
                 velocity += deb_velocity_step;
 
             var timeDate = DateTime.Now;
             string hour = timeDate.Hour.ToString().PadLeft(2, '0');
             string minute = timeDate.Minute.ToString().PadLeft(2, '0');
             string time = hour + ":" + minute;
-
 
             clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
