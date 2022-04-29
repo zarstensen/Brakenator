@@ -231,10 +231,12 @@ namespace Brakenator
                 if (pageNumber == 3)
                 {
                     pageMap.weatherIcon.Content = Application.Current.FindResource(contentKey);
+                    weatherIcon.Content = Application.Current.FindResource("empty");
                 }
                 else
                 {
                     weatherIcon.Content = Application.Current.FindResource(contentKey);
+                    pageMap.weatherIcon.Content = Application.Current.FindResource("empty");
                 }
                 page2.sunIcon.Content = Application.Current.FindResource(ROAD_SUN + sunKey);
                 page2.rainIcon.Content = Application.Current.FindResource(ROAD_RAIN + rainKey);
@@ -295,8 +297,8 @@ namespace Brakenator
             {
                 if (pageNumber == 1)
                 {
-                    main_frame.Content = page2;
                     pageNumber = 2;
+                    main_frame.Content = page2;
                     ball2.Fill = new SolidColorBrush(Color.FromRgb(190, 190, 190));
                     ball1.Fill = new SolidColorBrush();
                 }
@@ -312,8 +314,8 @@ namespace Brakenator
             { 
                 if (pageNumber == 2)
                 {
-                    main_frame.Content = page1;
                     pageNumber = 1;
+                    main_frame.Content = page1;
                     ball1.Fill = new SolidColorBrush(Color.FromRgb(190, 190, 190));
                     ball2.Fill = new SolidColorBrush();
                 }
