@@ -17,6 +17,8 @@ set(XAML_SRC
 	Page1.xaml.cs
 	Page2.xaml
 	Page2.xaml.cs
+	PageMap.xaml
+	PageMap.xaml.cs
 )
 
 add_executable(${PROJECT_NAME}

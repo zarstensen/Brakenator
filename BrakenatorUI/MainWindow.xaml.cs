@@ -31,6 +31,7 @@ namespace Brakenator
         int pageNumber = 1;
         Page1 page1;
         Page2 page2;
+        PageMap pageMap;
 
         double velocity = 20;
         double deb_target_velocity = 0;
@@ -56,6 +57,8 @@ namespace Brakenator
             BN.BNinit();
             page1 = new Page1(this);
             page2 = new Page2(this);
+            pageMap = new PageMap(this);
+
             BN.setWeatherKey(Directory.GetCurrentDirectory() + @"\weather_key.txt");
 
             BN.addCoeff(BN.WEATHER.BN_DRY, 50, 1);
@@ -79,7 +82,7 @@ namespace Brakenator
             InitializeComponent();
             main_frame.Content = page1;
             Frame map_frame = (Frame)this.FindResource("map");
-            map_frame.Content = page1;
+            map_frame.Content = pageMap;
 
             StartUpdateLoop();
         }
@@ -242,6 +245,8 @@ namespace Brakenator
             new Action(() => { 
                 page1.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
                 page1.brakingTime.Text = Math.Round(info.time).ToString() + " s";
+                pageMap.brakingDistance.Text = Math.Round(info.distance).ToString() + " m";
+                pageMap.brakingTime.Text = Math.Round(info.time).ToString() + " s";
             }));
         }
         System.Timers.Timer loopTimer;
@@ -292,10 +297,8 @@ namespace Brakenator
                 {
                     pageNumber = 1;
                     this.Content = main;
-                    main_frame.Content = page1;
                     this.Height = prevHeight;
                     this.Width = prevWidth;
-                    main_frame.Refresh();
                 }
             }
             else
@@ -310,14 +313,11 @@ namespace Brakenator
                 else if (pageNumber == 1)
                 {
                     pageNumber = 3;
-                    Frame map_frame = (Frame)this.FindResource("map");
-                    map_frame.Content = page1;
                     prevHeight = this.Height;
                     prevWidth = this.Width;
                     this.Content = this.FindResource("map");
                     this.Height = 200;
                     this.Width = 120;
-                    map_frame.Refresh();
                 }
             }
         }
@@ -363,6 +363,10 @@ namespace Brakenator
                 page2.waterlayerRoadText.FontSize = font_size * .5;
                 page2.snowRoadText.FontSize = font_size * .5;
 
+                //change font on pages
+                pageMap.brakingDistance.FontSize = font_size * 2.2 * .3;
+                pageMap.brakingTime.FontSize = font_size * 2.2 * .3;
+
                 // calculate ball size
                 ball1.Width = ball_size * BALL_WEIGHT;
                 ball2.Width = ball_size * BALL_WEIGHT;
@@ -382,11 +386,7 @@ namespace Brakenator
             else
             // cahnge on map screen
             {
-                const double FONT_WEIGHT = .25;
-                double font_size = text_size * FONT_WEIGHT;
-                //change font on pages
-                page1.brakingDistance.FontSize = font_size * 2.2;
-                page1.brakingTime.FontSize = font_size * 2.2;
+                
             }
 
         }

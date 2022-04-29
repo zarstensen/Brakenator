@@ -33,7 +33,7 @@ namespace Brakenator
         {
             var timeDate = DateTime.Now;
             timeEnd = timeDate.TimeOfDay.TotalMilliseconds;
-            if (timeEnd - timeStart < 100)
+            if (timeEnd - timeStart < 200)
             { 
                 BN.setWeather(BN.WEATHER.BN_DRY);
                 mainWindow.StartUserClearTimeout(userTimeout);
