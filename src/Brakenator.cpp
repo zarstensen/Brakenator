@@ -34,6 +34,7 @@ BNduration s_weather_freq = 10min;
 BNduration s_weather_last_call = 0min;
 
 double s_min_weather_distance = 2.5; // km
+double s_min_elevation_distance = 8; // m
 
 double s_prev_lat = INFINITY;
 double s_prev_lon = INFINITY;
@@ -460,7 +461,7 @@ BN_WEATHER getWeather()
 BN_ERR BN_API sampleElevation(double lat, double lon)
 {
     if(s_slope_elevations.first.elevation == INFINITY ||
-    coordToDistance(s_slope_elevations.first.lat, s_slope_elevations.first.lon, lat, lon) < 30)
+    coordToDistance(s_slope_elevations.first.lat, s_slope_elevations.first.lon, lat, lon) < s_min_elevation_distance)
         return BN_OK;
 
     // use open topo data to get the elevation.
