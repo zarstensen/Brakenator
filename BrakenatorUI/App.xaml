@@ -1696,5 +1696,7 @@
                 </Canvas>
             </Canvas>
         </Canvas>
+
+        <Canvas x:Key="empty" />
     </Application.Resources>
 </Application>
