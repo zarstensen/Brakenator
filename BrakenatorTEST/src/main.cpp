@@ -34,5 +34,16 @@ int main()
 
 	std::cout << binf.distance << ':' << binf.time << '\n';
 
+	setWeather(BN_WET);
+
+	getBrakingInfo(50, &binf);
+
+	std::cout << binf.distance << ':' << binf.time << '\n';
+
+	setWeather(BN_DRY);
+
+	getBrakingInfo(50, &binf);
+
+	std::cout << binf.distance << ':' << binf.time << '\n';
 
 }

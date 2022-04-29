@@ -5,6 +5,8 @@
 #include <string>
 #include <curl/curl.h>
 #include <rapidjson/document.h>
+#undef min
+#undef max
 #include <fstream>
 #include <sstream>
 #include <chrono>
@@ -69,17 +71,12 @@ struct FrictionCoeffs
     {
         auto m_iter = coeffs[weather].begin();
 
-        std::cout << "W: " << weather << '\n';
-
         // use the first two table values as the default values
 
         double b_vel = m_iter->first;
         double b_coeff = m_iter->second;
-        
-        std::cout << "CF: " << m_iter->second << '\n';
 
         m_iter++;
-
 
         // if only one coefficient is stored, just return this value no matter the velocity.
         if(m_iter == coeffs[weather].end())
@@ -92,11 +89,8 @@ struct FrictionCoeffs
         // if the velocity is outside the table velocities, the final values will either be the first two table values or the last two table values.
         for(;++m_iter != coeffs[weather].end();)
         {
-            std::cout << 'V' << m_iter->first << ':' << velocity << '\n';
-            if(velocity >= m_iter->first)
+            if(velocity <= m_iter->first)
                 break;
-            
-            std::cout << "M\n";
 
             b_vel = a_vel;
             b_coeff = a_coeff;
@@ -112,12 +106,8 @@ struct FrictionCoeffs
 
         double res_coeff = a * velocity + b;
 
-        std::cout << a_coeff << ':' << b_coeff << '\n';
-        std::cout << "RCF: " << res_coeff << '\n';
-
-        return res_coeff;
+        return std::max(res_coeff, 0.0);
     }
-
 };
 
 FrictionCoeffs s_friction_coeffs;
@@ -258,7 +248,6 @@ void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
     if(velocity < 1e-6)
     {
-    // convert km/h to m/s
     velocity /= 3.6;
     double slope = slopeAngle();
 
