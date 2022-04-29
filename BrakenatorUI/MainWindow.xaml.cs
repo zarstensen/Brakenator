@@ -118,6 +118,11 @@ namespace Brakenator
                     Console.Write("vel: ");
                     double.TryParse(Console.ReadLine(), out deb_target_velocity);
                 }
+                else if (line == "elevate")
+                {
+                    BN.sampleElevation(55.771609, 12.556494);
+                    BN.sampleElevation(55.773546, 12.540679);
+                }
                 else
                 {
                     Console.WriteLine("Invalid argument!");

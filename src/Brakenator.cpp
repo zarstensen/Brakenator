@@ -192,6 +192,9 @@ size_t curlGetCallback(char* buffer, size_t, size_t nitems, void* userdata)
 BN_API void BNinit()
 {
     s_curl = curl_easy_init();
+
+    curl_easy_setopt(s_curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(s_curl, CURLOPT_SSL_VERIFYHOST, 1L);
 }
 
 BN_API void BNcleanup()
@@ -460,8 +463,8 @@ BN_WEATHER getWeather()
 
 BN_ERR BN_API sampleElevation(double lat, double lon)
 {
-    if(s_slope_elevations.first.elevation == INFINITY ||
-    coordToDistance(s_slope_elevations.first.lat, s_slope_elevations.first.lon, lat, lon) < s_min_elevation_distance)
+    if(s_slope_elevations.second.elevation != INFINITY ||
+    coordToDistance(s_slope_elevations.first.lat, s_slope_elevations.first.lon, lat, lon) > s_min_elevation_distance)
         return BN_OK;
 
     // use open topo data to get the elevation.
