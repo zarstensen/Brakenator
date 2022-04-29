@@ -33,6 +33,8 @@ namespace Brakenator
         Page2 page2;
 
         double velocity = 20;
+        double deb_target_velocity = 0;
+        double deb_velocity_step = 1;
         double lattitude = 55.7782614;
         double longitude = 12.5279069;
 
@@ -111,7 +113,7 @@ namespace Brakenator
                 else if (line == "vel")
                 {
                     Console.Write("vel: ");
-                    double.TryParse(Console.ReadLine(), out velocity);
+                    double.TryParse(Console.ReadLine(), out deb_target_velocity);
                 }
                 else
                 {
@@ -145,7 +147,11 @@ namespace Brakenator
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            velocity++;
+            if(deb_target_velocity < velocity)
+                velocity -= deb_velocity_step;
+            else
+                velocity += deb_velocity_step;
+
             var timeDate = DateTime.Now;
             string hour = timeDate.Hour.ToString().PadLeft(2, '0');
             string minute = timeDate.Minute.ToString().PadLeft(2, '0');
