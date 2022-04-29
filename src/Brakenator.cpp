@@ -246,20 +246,20 @@ void setReactionTime(double reaction)
 
 void getBrakingInfo(double velocity, BrakingInfo* info_out)
 {
-    if(velocity < 1e-6)
+    if(velocity > 1e-6)
     {
-    velocity /= 3.6;
-    double slope = slopeAngle();
+        velocity /= 3.6;
+        double slope = slopeAngle();
 
-    double dacc = GRAVITY * (s_friction_coeffs.getCoeff(s_weather, velocity) * cos(slope) + sin(slope));
+        double dacc = GRAVITY * (s_friction_coeffs.getCoeff(s_weather, velocity) * cos(slope) + sin(slope));
 
-    // start by calculating the braking distance
-    info_out->distance = ipow(velocity, 2) / (2 * dacc);
+        // start by calculating the braking distance
+        info_out->distance = ipow(velocity, 2) / (2 * dacc);
 
-    // use the distance calculated to calculate the time
-    info_out->time = velocity / dacc + s_reaction;
+        // use the distance calculated to calculate the time
+        info_out->time = velocity / dacc + s_reaction;
 
-    info_out->distance += velocity * s_reaction;
+        info_out->distance += velocity * s_reaction;
     }
     else
     {
