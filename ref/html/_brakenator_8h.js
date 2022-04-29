@@ -9,7 +9,6 @@ var _brakenator_8h =
       [ "BN_TIMED_OUT", "_brakenator_8h.html#a8d1c6018730538e46fc8a2b308c864baa7cafd79538b06a4642528cca079765c5", null ],
       [ "BN_EXCEEDED_API_LIMIT", "_brakenator_8h.html#a8d1c6018730538e46fc8a2b308c864baadeac43e1b6daafd678194cfe3d3b5ff1", null ],
       [ "BN_HOST_ERROR", "_brakenator_8h.html#a8d1c6018730538e46fc8a2b308c864baafa902ca1a03b358b8b830f66269318cd", null ],
-      [ "BN_INVALID_ARGS", "_brakenator_8h.html#a8d1c6018730538e46fc8a2b308c864baa5e8381008aaef8ceaa97053ded7752dc", null ],
       [ "BN_UNKNOWN", "_brakenator_8h.html#a8d1c6018730538e46fc8a2b308c864baa21e77970a85fd8c5095793c027f693a3", null ]
     ] ],
     [ "BN_WEATHER", "_brakenator_8h.html#aa4c9342cdb23bd16dc118d9125a63609", [

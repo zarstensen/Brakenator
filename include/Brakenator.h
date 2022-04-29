@@ -26,16 +26,21 @@ extern "C"
 		BN_TIMED_OUT,
 		///@brief the passed API key has no more requests avaliable
 		BN_EXCEEDED_API_LIMIT,
+		///@brief an error has occured with the target host of the GET request.
 		BN_HOST_ERROR,
-		BN_INVALID_ARGS,
+		///@brief an unknown error has occured.
 		BN_UNKNOWN
 	};
 
 	enum BN_WEATHER: short
 	{
+		///@brief the road is dry.
 		BN_DRY,
+		///@brief the road is wet.
 		BN_WET,
+		///@brief the road has a layer of water on top of it.
 		BN_WLAYER,
+		///@brief the road is icy.
 		BN_ICY
 	};
 
@@ -70,7 +75,6 @@ extern "C"
 	BN_API void setReactionTime(double reaction);
 
 	///@brief sets the wether type that should be used when approximating the friction coefficient.
-	/// for details on how to pass the parameters, see https://openweathermap.org/weather-conditions
 	BN_API void setWeather(BN_WEATHER weather, bool user = true);
 	///@brief clears the user_weather flag.
 	/// This allows autoWeather to override the current weather.
