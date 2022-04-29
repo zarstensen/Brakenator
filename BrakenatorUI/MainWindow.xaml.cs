@@ -227,7 +227,15 @@ namespace Brakenator
             }
                 clock.Dispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.Normal,
-            new Action(() => { weatherIcon.Content = Application.Current.FindResource(contentKey);
+            new Action(() => { 
+                if (pageNumber == 3)
+                {
+                    pageMap.weatherIcon.Content = Application.Current.FindResource(contentKey);
+                }
+                else
+                {
+                    weatherIcon.Content = Application.Current.FindResource(contentKey);
+                }
                 page2.sunIcon.Content = Application.Current.FindResource(ROAD_SUN + sunKey);
                 page2.rainIcon.Content = Application.Current.FindResource(ROAD_RAIN + rainKey);
                 page2.waterlayerIcon.Content = Application.Current.FindResource(ROAD_WATERLAYER+ waterlayerKey);
@@ -315,7 +323,7 @@ namespace Brakenator
                     prevHeight = this.Height;
                     prevWidth = this.Width;
                     this.Content = this.FindResource("map");
-                    this.Height = 200;
+                    this.Height = 180;
                     this.Width = 120;
                 }
             }
@@ -363,8 +371,8 @@ namespace Brakenator
                 page2.snowRoadText.FontSize = font_size * .5;
 
                 //change font on pages
-                pageMap.brakingDistance.FontSize = font_size * 2.2 * .3;
-                pageMap.brakingTime.FontSize = font_size * 2.2 * .3;
+                pageMap.brakingDistance.FontSize = font_size * 2.2 * .4;
+                pageMap.brakingTime.FontSize = font_size * 2.2 * .4;
 
                 // calculate ball size
                 ball1.Width = ball_size * BALL_WEIGHT;
