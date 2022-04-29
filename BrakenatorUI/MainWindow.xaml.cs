@@ -150,9 +150,9 @@ namespace Brakenator
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            if((deb_target_velocity - deb_velocity_step) < velocity)
+            if((deb_target_velocity + deb_velocity_step * 1.5) < velocity)
                 velocity -= deb_velocity_step;
-            else if ((deb_target_velocity + deb_velocity_step) > velocity)
+            else if ((deb_target_velocity - deb_velocity_step * 1.5) > velocity)
                 velocity += deb_velocity_step;
 
             var timeDate = DateTime.Now;
@@ -257,7 +257,7 @@ namespace Brakenator
             }));
         }
         System.Timers.Timer loopTimer;
-        System.Timers.Timer userClearTimer;
+        public System.Timers.Timer userClearTimer;
         public void StartUpdateLoop()
         {
             //make timer

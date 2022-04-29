@@ -29,55 +29,48 @@ namespace Brakenator
         }
         double timeStart;
         double timeEnd;
-        private void SunIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        // how long the button should be held, before the press will be ignored.
+        const double buttonPressTime = 200;
+
+        private void SelectButton(BN.WEATHER button_id)
         {
             var timeDate = DateTime.Now;
             timeEnd = timeDate.TimeOfDay.TotalMilliseconds;
-            if (timeEnd - timeStart < 200)
-            { 
-                BN.setWeather(BN.WEATHER.BN_DRY);
+            if (timeEnd - timeStart < buttonPressTime)
+            {
+                BN.setWeather(button_id);
+                if (mainWindow.userClearTimer != null)
+                    mainWindow.userClearTimer.Stop();
                 mainWindow.StartUserClearTimeout(userTimeout);
             }
+        }
+
+        private void SunIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SelectButton(BN.WEATHER.BN_DRY);
         }
 
         private void RainIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var timeDate = DateTime.Now;
-            timeEnd = timeDate.TimeOfDay.TotalMilliseconds;
-            if (timeEnd - timeStart < 100)
-            {
-                BN.setWeather(BN.WEATHER.BN_WET);
-                mainWindow.StartUserClearTimeout(userTimeout);
-            }
+            SelectButton(BN.WEATHER.BN_WET);
         }
 
         private void WaterlayerIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-                var timeDate = DateTime.Now;
-                timeEnd = timeDate.TimeOfDay.TotalMilliseconds;
-                if (timeEnd - timeStart < 100)
-                {
-                    BN.setWeather(BN.WEATHER.BN_WLAYER);
-                    mainWindow.StartUserClearTimeout(userTimeout);
-                }
+            SelectButton(BN.WEATHER.BN_WLAYER);
         }
 
         private void SnowIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var timeDate = DateTime.Now;
-            timeEnd = timeDate.TimeOfDay.TotalMilliseconds;
-            if (timeEnd - timeStart < 100)
-            {
-                BN.setWeather(BN.WEATHER.BN_ICY);
-                mainWindow.StartUserClearTimeout(userTimeout);
-            }
+            SelectButton(BN.WEATHER.BN_ICY);
         }
 
         private void Auto_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var timeDate = DateTime.Now;
             timeEnd = timeDate.TimeOfDay.TotalMilliseconds;
-            if (timeEnd - timeStart < 100)
+            if (timeEnd - timeStart < buttonPressTime)
             {
                 BN.clearUserWeather();
             }
